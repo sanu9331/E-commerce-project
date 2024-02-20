@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>add products</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+
+    <!-- Cropper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <!-- Include Cropper.js CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <header>
+        <!-- place navbar here -->
+        <%- include('../layouts/adminHeader.ejs') %>
+    </header>
+    <main>
+
+
+        <div class="container form-box mt-5">
+            <div class="row d-flex justify-content-end">
+                <div class="col-md-10 col-lg-12 col-xl-12">
+
+                    <form id="ProductForm" name="ProductForm" method="post" action="/admin/products/add"
+                        enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" />
+                                    <div id="nameWarning" class="text-danger"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="price">Price</label>
+                                    <input type="number" class="form-control" id="price" name="price" />
+                                    <div id="priceWarning" class="text-danger"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="category">Category</label>
+                                    <select class="select form-control" id="category" name="category">
+                                        <option value="">Select</option>
+                                        <% category.forEach(categoryes=> { %>
+                                            <option value="<%= categoryes.category %>">
+                                                <%= categoryes.category %>
+                                            </option>
+                                            <% }); %>
+                                    </select>
+                                    <div id="categoryWarning" class="text-danger"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="subCategory">Sub Category</label>
+                                    <select class="select form-control" id="subCategory" name="subCategory">
+                                        <option value="">Select</option>
+                                        <% category.forEach(categoryes=> { %>
+                                            <option value="<%= categoryes.sub_Category %>">
+                                                <%= categoryes.sub_Category %>
+                                            </option>
+                                            <% }); %>
+                                    </select>
+                                    <div id="subCategoryWarning" class="text-danger"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <!-- <label for="brand">Brand</label>
+                                    <select class="select form-control" id="brand" name="brand">
+                                        <option value="">Select</option>
+                                        <option value="Apple">Apple</option>
+                                        <option value="Samsung">Samsung</option>
+                                        <option value="Oppo">Oppo</option>
+                                        <option value="Asus">Asus</option>
+                                        <option value="Dell">Dell</option>
+                                        <option value="Hp">Hp</option>
+                                        <option value="Zebronics">Zebronics</option>
+                                        <option value="fire-Boltt ">fire-Boltt </option>
+                                        <option value="Boat">Boat</option>
+                                        <option value="Fasttrack">Fasttrack</option>
+
+                                    </select>
+                                    <div id="brandWarning" class="text-danger"></div> -->
+                                    <label for="brand">Brand</label>
+                                    <input type="text" class="select form-control" id="brand" name="brand" />
+                                    <div id="brandWarning" class="text-danger"></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="row">
+
+
+
+
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="discount">Discount</label>
+                                    <input type="number" class="form-control" id="discount" name="discount" />
+                                    <div id="discountWarning" class="text-danger"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select class="select form-control" id="status" name="status">
+                                        <option value="">Select</option>
+                                        <option value="true">true</option>
+                                        <option value="false">false</option>
+                                    </select>
+                                    <div id="statusWarning" class="text-danger"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="stockQuantity">Stock Quantity</label>
+                                    <input type="number" class="form-control" id="stockQuantity" name="stock" />
+                                    <div id="stockWarning" class="text-danger"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="color">Color</label>
+                                    <select class="select form-control" id="color" name="color">
+                                        <option value="">Select</option>
+                                        <option value="Red">Red</option>
+                                        <option value="Blue">Blue</option>
+                                        <option value="Black">Black</option>
+                                        <option value="Green">Green</option>
+                                        <option value="Yellow">Yellow</option>
+                                        <option value="Purple">Purple</option>
+                                        <option value="Orange">Orange</option>
+                                        <option value="Pink">Pink</option>
+
+                                    </select>
+
+                                    <div id="colorWarning" class="text-danger"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <textarea class="form-control " id="description" name="description"></textarea>
+                                    <div id="descriptionWarning" class="text-danger"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="description">Images</label>
+
+
+                                <div class="form-group " style="
+                            display: flex;
+                            justify-content: space-between;
+                          ">
+                                    <input type="file" id="images" class="form-control" name="images" accept="image/*"
+                                        multiple required />
+                                    <input type="hidden" id="croppedImageData" name="croppedImageData" />
+
+                                </div>
+                                <div id="imagesWarning" class="text-danger"></div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <button style="width: 100%;" class="btn btn-success">
+                                        Add Product
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class=" form-group">
+            <div class="image-cropper">
+                <div id="imagesWarning" class="text-danger"></div>
+            </div>
+
+            <!-- Image Cropping Modal -->
+            <!-- Image Cropping Modal -->
+            <div class="modal fade" id="imageCropModal" tabindex="-1" aria-labelledby="imageCropModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg" style="max-width: 400px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="imageCropModalLabel">Crop Image</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <img id="imageToCrop" src="" alt="Crop Image" class="img-fluid" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="cropImageBtn">Crop Image</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+    <script>
+        document.getElementById('images').addEventListener('change', function (event) {
+            var files = event.target.files;
+            var totalImages = Math.min(files.length, 4); // Limit to 4 images
+            var croppedImages = 0;
+
+            // Clear existing hidden input fields for cropped images
+            var existingCroppedImageDataInputs = document.querySelectorAll('input[name="croppedImageData[]"]');
+            existingCroppedImageDataInputs.forEach(input => input.remove());
+
+            if (totalImages > 0) {
+                Array.from(files).slice(0, totalImages).forEach(file => { // Process only the first 4 images
+                    var reader = new FileReader();
+
+                    reader.onload = function (event) {
+                        var imageUrl = event.target.result;
+                        var imageToCrop = document.createElement('img');
+                        imageToCrop.src = imageUrl;
+                        document.getElementById('imageCropModal').querySelector('.modal-body').appendChild(imageToCrop);
+
+                        var cropper = new Cropper(imageToCrop, {
+                            aspectRatio: 16 / 9,
+                            viewMode: 1,
+                            dragMode: 'move',
+                            autoCropArea: 1,
+                            scalable: true,
+                            zoomable: true,
+                            minContainerWidth: 300,
+                            minContainerHeight: 300,
+                            toggleDragModeOnDblclick: false
+                        });
+
+                        document.getElementById('cropImageBtn').addEventListener('click', cropAndProceed);
+
+                        function cropAndProceed() {
+                            var croppedCanvas = cropper.getCroppedCanvas();
+
+                            // Check if the cropped canvas contains any data
+                            if (croppedCanvas.toDataURL() !== 'data:,') {
+                                var croppedImageData = croppedCanvas.toDataURL();
+
+                                // Set the cropped image data to the hidden input field
+                                var croppedImageDataInput = document.createElement('input');
+                                croppedImageDataInput.type = 'hidden';
+                                croppedImageDataInput.name = 'croppedImageData[]';
+                                croppedImageDataInput.value = croppedImageData;
+                                document.getElementById('ProductForm').appendChild(croppedImageDataInput);
+
+                                // Increment the counter for cropped images
+                                croppedImages++;
+                            }
+
+                            // Remove the image and cropper from the modal
+                            cropper.destroy();
+                            document.getElementById('imageCropModal').querySelector('.modal-body').removeChild(imageToCrop);
+
+                            // Check if all images are cropped
+                            if (croppedImages === totalImages) {
+                                document.getElementById('addProductBtn').removeAttribute('disabled');
+                            }
+
+                            // Detach event listener to prevent multiple listeners on the same button
+                            document.getElementById('cropImageBtn').removeEventListener('click', cropAndProceed);
+                        }
+
+                        // Show the cropping modal
+                        var modal = new bootstrap.Modal(document.getElementById('imageCropModal'));
+                        modal.show();
+                    };
+
+                    reader.readAsDataURL(file);
+                });
+            }
+        });
+
+
+    </script>
+
+
+
+
+    <footer>
+        <!-- place footer here -->
+        <%- include('../layouts/adminFooter.ejs') %>
+    </footer>
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

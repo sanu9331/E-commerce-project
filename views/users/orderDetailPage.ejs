@@ -151,7 +151,8 @@
                                                 <% if (order.couponDiscountPrice !==null) { %>
                                                     $ <%= order.couponDiscountPrice %>
                                                         <% } else { %>
-                                                            $ <%= (order.totalAmount / 100).toFixed(2) %>
+                                                            <!-- $ <%= (order.totalAmount / 100).toFixed(2) %> -->
+                                                            $<%= order.totalAmount %>
                                                                 <% } %>
                                             </td>
                                             </tr>
@@ -196,7 +197,8 @@
                                                             <% if (order.couponDiscountPrice !==null) { %>
                                                                 $ <%= order.couponDiscountPrice %>
                                                                     <% } else { %>
-                                                                        $ <%= (order.totalAmount / 100).toFixed(2) %>
+                                                                        <!-- $ <%= (order.totalAmount / 100).toFixed(2) %> -->
+                                                                        $<%= order.totalAmount %>
                                                                             <% } %>
                                                         </td>
                                                     </tr>

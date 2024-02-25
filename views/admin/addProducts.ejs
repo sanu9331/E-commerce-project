@@ -24,62 +24,76 @@
         <%- include('../layouts/adminHeader.ejs') %>
     </header>
     <main>
+        <% if (messages.error) { %>
+            <div class="alert alert-danger">
+                <%= messages.error %>
+                    <button type="button" class="close" aria-label="Close" onclick="closeFlashMessage()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <% } else if (messages.success) { %>
+                <div class="alert alert-success">
+                    <%= messages.success %>
+                        <button type="button" class="close" aria-label="Close" onclick="closeFlashMessage()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <% } %>
 
+                    <div class="container form-box mt-5">
+                        <div class="row d-flex justify-content-end">
+                            <div class="col-md-10 col-lg-12 col-xl-12">
 
-        <div class="container form-box mt-5">
-            <div class="row d-flex justify-content-end">
-                <div class="col-md-10 col-lg-12 col-xl-12">
+                                <form id="ProductForm" name="ProductForm" method="post" action="/admin/products/add"
+                                    enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="name">Name</label>
+                                                <input type="text" class="form-control" id="name" name="name" />
+                                                <div id="nameWarning" class="text-danger"></div>
+                                            </div>
+                                        </div>
 
-                    <form id="ProductForm" name="ProductForm" method="post" action="/admin/products/add"
-                        enctype="multipart/form-data">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" />
-                                    <div id="nameWarning" class="text-danger"></div>
-                                </div>
-                            </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="price">Price</label>
+                                                <input type="number" class="form-control" id="price" name="price" />
+                                                <div id="priceWarning" class="text-danger"></div>
+                                            </div>
+                                        </div>
 
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="price">Price</label>
-                                    <input type="number" class="form-control" id="price" name="price" />
-                                    <div id="priceWarning" class="text-danger"></div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="category">Category</label>
-                                    <select class="select form-control" id="category" name="category">
-                                        <option value="">Select</option>
-                                        <% category.forEach(categoryes=> { %>
-                                            <option value="<%= categoryes.category %>">
-                                                <%= categoryes.category %>
-                                            </option>
-                                            <% }); %>
-                                    </select>
-                                    <div id="categoryWarning" class="text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="subCategory">Sub Category</label>
-                                    <select class="select form-control" id="subCategory" name="subCategory">
-                                        <option value="">Select</option>
-                                        <% category.forEach(categoryes=> { %>
-                                            <option value="<%= categoryes.sub_Category %>">
-                                                <%= categoryes.sub_Category %>
-                                            </option>
-                                            <% }); %>
-                                    </select>
-                                    <div id="subCategoryWarning" class="text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <!-- <label for="brand">Brand</label>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="category">Category</label>
+                                                <select class="select form-control" id="category" name="category">
+                                                    <option value="">Select</option>
+                                                    <% category.forEach(categoryes=> { %>
+                                                        <option value="<%= categoryes.category %>">
+                                                            <%= categoryes.category %>
+                                                        </option>
+                                                        <% }); %>
+                                                </select>
+                                                <div id="categoryWarning" class="text-danger"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="subCategory">Sub Category</label>
+                                                <select class="select form-control" id="subCategory" name="subCategory">
+                                                    <option value="">Select</option>
+                                                    <% category.forEach(categoryes=> { %>
+                                                        <option value="<%= categoryes.sub_Category %>">
+                                                            <%= categoryes.sub_Category %>
+                                                        </option>
+                                                        <% }); %>
+                                                </select>
+                                                <div id="subCategoryWarning" class="text-danger"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <!-- <label for="brand">Brand</label>
                                     <select class="select form-control" id="brand" name="brand">
                                         <option value="">Select</option>
                                         <option value="Apple">Apple</option>
@@ -95,143 +109,150 @@
 
                                     </select>
                                     <div id="brandWarning" class="text-danger"></div> -->
-                                    <label for="brand">Brand</label>
-                                    <input type="text" class="select form-control" id="brand" name="brand" />
-                                    <div id="brandWarning" class="text-danger"></div>
-                                </div>
-                            </div>
+                                                <label for="brand">Brand</label>
+                                                <input type="text" class="select form-control" id="brand"
+                                                    name="brand" />
+                                                <div id="brandWarning" class="text-danger"></div>
+                                            </div>
+                                        </div>
 
-                        </div>
-
-
-
-                        <div class="row">
+                                    </div>
 
 
 
+                                    <div class="row">
 
 
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="discount">Discount</label>
-                                    <input type="number" class="form-control" id="discount" name="discount" />
-                                    <div id="discountWarning" class="text-danger"></div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="status">Status</label>
-                                    <select class="select form-control" id="status" name="status">
-                                        <option value="">Select</option>
-                                        <option value="true">true</option>
-                                        <option value="false">false</option>
-                                    </select>
-                                    <div id="statusWarning" class="text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="stockQuantity">Stock Quantity</label>
-                                    <input type="number" class="form-control" id="stockQuantity" name="stock" />
-                                    <div id="stockWarning" class="text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="color">Color</label>
-                                    <select class="select form-control" id="color" name="color">
-                                        <option value="">Select</option>
-                                        <option value="Red">Red</option>
-                                        <option value="Blue">Blue</option>
-                                        <option value="Black">Black</option>
-                                        <option value="Green">Green</option>
-                                        <option value="Yellow">Yellow</option>
-                                        <option value="Purple">Purple</option>
-                                        <option value="Orange">Orange</option>
-                                        <option value="Pink">Pink</option>
-
-                                    </select>
-
-                                    <div id="colorWarning" class="text-danger"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
 
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="description">Description</label>
-                                    <textarea class="form-control " id="description" name="description"></textarea>
-                                    <div id="descriptionWarning" class="text-danger"></div>
-                                </div>
-                            </div>
 
-                            <div class="col-md-6">
-                                <label for="description">Images</label>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="discount">Discount</label>
+                                                <input type="number" class="form-control" id="discount"
+                                                    name="discount" />
+                                                <div id="discountWarning" class="text-danger"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="status">Status</label>
+                                                <select class="select form-control" id="status" name="status">
+                                                    <option value="">Select</option>
+                                                    <option value="true">true</option>
+                                                    <option value="false">false</option>
+                                                </select>
+                                                <div id="statusWarning" class="text-danger"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="stockQuantity">Stock Quantity</label>
+                                                <input type="number" class="form-control" id="stockQuantity"
+                                                    name="stock" />
+                                                <div id="stockWarning" class="text-danger"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="color">Color</label>
+                                                <select class="select form-control" id="color" name="color">
+                                                    <option value="">Select</option>
+                                                    <option value="Red">Red</option>
+                                                    <option value="Blue">Blue</option>
+                                                    <option value="Black">Black</option>
+                                                    <option value="Green">Green</option>
+                                                    <option value="Yellow">Yellow</option>
+                                                    <option value="Purple">Purple</option>
+                                                    <option value="Orange">Orange</option>
+                                                    <option value="Pink">Pink</option>
+
+                                                </select>
+
+                                                <div id="colorWarning" class="text-danger"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
 
 
-                                <div class="form-group " style="
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="description">Description</label>
+                                                <textarea class="form-control " id="description"
+                                                    name="description"></textarea>
+                                                <div id="descriptionWarning" class="text-danger"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label for="description">Images</label>
+
+
+                                            <div class="form-group " style="
                             display: flex;
                             justify-content: space-between;
                           ">
-                                    <input type="file" id="images" class="form-control" name="images" accept="image/*"
-                                        multiple required />
-                                    <input type="hidden" id="croppedImageData" name="croppedImageData" />
+                                                <input type="file" id="images" class="form-control" name="images"
+                                                    accept="image/*" multiple required />
+                                                <input type="hidden" id="croppedImageData" name="croppedImageData" />
 
-                                </div>
-                                <div id="imagesWarning" class="text-danger"></div>
+                                            </div>
+                                            <div id="imagesWarning" class="text-danger"></div>
 
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <button style="width: 100%;" class="btn btn-success">
+                                                    Add Product
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </form>
                             </div>
-
-                        </div>
-
-                        <div class="row">
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <button style="width: 100%;" class="btn btn-success">
-                                        Add Product
-                                    </button>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class=" form-group">
-            <div class="image-cropper">
-                <div id="imagesWarning" class="text-danger"></div>
-            </div>
-
-            <!-- Image Cropping Modal -->
-            <!-- Image Cropping Modal -->
-            <div class="modal fade" id="imageCropModal" tabindex="-1" aria-labelledby="imageCropModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-lg" style="max-width: 400px;">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="imageCropModalLabel">Crop Image</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <img id="imageToCrop" src="" alt="Crop Image" class="img-fluid" />
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="cropImageBtn">Crop Image</button>
                         </div>
                     </div>
-                </div>
-            </div>
+                    <div class=" form-group">
+                        <div class="image-cropper">
+                            <div id="imagesWarning" class="text-danger"></div>
+                        </div>
+
+                        <!-- Image Cropping Modal -->
+                        <!-- Image Cropping Modal -->
+                        <div class="modal fade" id="imageCropModal" tabindex="-1" aria-labelledby="imageCropModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-lg" style="max-width: 400px;">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="imageCropModalLabel">Crop Image</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <img id="imageToCrop" src="" alt="Crop Image" class="img-fluid" />
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" id="cropImageBtn">Crop
+                                            Image</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 
-        </div>
+                    </div>
 
 
     </main>
@@ -314,7 +335,14 @@
 
     </script>
 
-
+    <script>
+        function closeFlashMessage() {
+            const flashMessage = document.querySelector('.alert.alert-danger, .alert.alert-success');
+            if (flashMessage) {
+                flashMessage.remove();
+            }
+        }
+    </script>
 
 
     <footer>

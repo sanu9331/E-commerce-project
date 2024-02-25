@@ -23,7 +23,7 @@ const productSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        required: true, // You can reference a User schema if you have one
+        required: true,
     },
     // category: {
     //     type: mongoose.Schema.Types.ObjectId,

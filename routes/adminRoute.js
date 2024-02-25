@@ -105,6 +105,7 @@ admin_route.get("/products/view/:id", adminAuth.isLogin, productController.admin
 admin_route.get("/products/add", adminAuth.isLogin, productController.addProductLoad);
 admin_route.post("/products/add", uploadProductImage.array('images', 4), productController.addProduct);
 admin_route.get("/products/delete/:id", adminAuth.isLogin, productController.deleteProduct);
+//admin_route.get('/products / searchProducts', productController.searchProducts);
 
 
 //ADMIN PRODUCT EDIT ROUTE

@@ -139,7 +139,12 @@
 
                 </div>
                 <div class="detail">
-                    <span class="d-block summery">Your order has been dispatched. we are delivering you order.</span>
+                    <span class="d-block summery">Your order has been dispatched. Order will de delivered on <b
+                            style="color: #828282;">
+                            <%= new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toLocaleDateString() %>
+                        </b>
+
+                        .</span>
                 </div>
                 <hr>
                 <div class="text">
@@ -147,9 +152,12 @@
                         <!-- <%= userData.name %> -->
                     </span>
                 </div>
-                <span class="d-block address mb-3">
-                    <!-- <%= orders.length> 0 ? orders[orders.length - 1].orderAddress : '' %> -->
-                </span>
+                <p style="font-size: 14px;">
+                    <!-- <%= new Date().toLocaleDateString() %> -->
+                </p>
+                <!-- <span class="d-block address mb-3">
+                    <%= orders.length> 0 ? orders[orders.length - 1].orderAddress : '' %>
+                </span> -->
                 <a href="/userProfile" class="styled-link">View Orders</a>
 
                 <div class="  money d-flex flex-row mt-2 align-items-center">

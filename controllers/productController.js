@@ -13,18 +13,55 @@ const UserModel = require("../models/userModel");
 //         console.error(error.meesage);
 //     }
 // };
+// const loadProduct = async (req, res) => {
+//     try {
+//         const { sortBy, search, page = 1, limit = 5 } = req.query;
+//         const skip = (page - 1) * limit;
+
+//         const ProductData = await productModel
+//             .find({})
+//             .populate('category')
+//             .skip(skip)
+//             .limit(limit);
+
+//         const productDataCount = await productModel.countDocuments({});
+//         const totalPages = Math.ceil(productDataCount / limit);
+
+//         res.render("products", {
+//             ProductData,
+//             sortBy,
+//             search,
+//             currentPage: parseInt(page),
+//             totalPages,
+//             limit: parseInt(limit),
+//         });
+//     } catch (error) {
+//         console.error(error.message);
+//     }
+// };
 const loadProduct = async (req, res) => {
     try {
         const { sortBy, search, page = 1, limit = 5 } = req.query;
         const skip = (page - 1) * limit;
 
+        let query = {};
+
+        if (search) {
+            query = {
+                $or: [
+                    { name: { $regex: search, $options: 'i' } }, // Case-insensitive search for name
+                    { brand: { $regex: search, $options: 'i' } } // Case-insensitive search for description
+                ]
+            };
+        }
+
         const ProductData = await productModel
-            .find({})
+            .find(query)
             .populate('category')
             .skip(skip)
             .limit(limit);
 
-        const productDataCount = await productModel.countDocuments({});
+        const productDataCount = await productModel.countDocuments(query);
         const totalPages = Math.ceil(productDataCount / limit);
 
         res.render("products", {
@@ -39,6 +76,7 @@ const loadProduct = async (req, res) => {
         console.error(error.message);
     }
 };
+
 
 
 const adminSingleProductView = async (req, res) => {
@@ -56,7 +94,7 @@ const adminSingleProductView = async (req, res) => {
 const addProductLoad = async (req, res) => {
     try {
         const category = await categoryModel.find({});
-        console.log(category);
+        //console.log(category);
 
         res.render("addProducts", { category });
     } catch (error) {
@@ -119,17 +157,41 @@ const addProductLoad = async (req, res) => {
 const addProduct = async (req, res) => {
     try {
         // Extract product data from request body
-        const { price, discount, status, stock } = req.body;
+
+
         const name = req.body.name.trim().toLowerCase();
         const description = req.body.description.trim();
         const brand = req.body.brand.trim().toLowerCase();
         const color = req.body.color.trim().toLowerCase();
         const category = req.body.category;
+        const discount = req.body.discount;
+        const status = req.body.status;
+        const stock = req.body.stock;
+        const price = req.body.price;
+
+        console.log('Name:', name);
+        console.log('Description:', description);
+        console.log('Brand:', brand);
+        console.log('Color:', color);
+        console.log('Category:', category);
+        console.log('Discount:', discount);
+        console.log('Status:', status);
+        console.log('Stock:', stock);
+        console.log('Price:', price);
 
         // Check if any required field is missing
         if (!name || !price || !brand || !discount || !stock || !description || !color || !category) {
             req.flash('error', 'All fields must be filled out.');
-            return res.redirect(`/admin/products/edit/${id}`);
+            return res.redirect('/admin/products/add');
+        }
+
+        // Check if price is negative
+        if (price <= 0) {
+            req.flash('error', 'Enter a valid price.');
+            return res.redirect('/admin/products/add');
+        } else if (discount < 0) {
+            req.flash('error', 'Enter a valid discount.');
+            return res.redirect('/admin/products/add');
         }
 
         // Find the category data
@@ -556,7 +618,18 @@ const viewAllProducts = async (req, res) => {
     }
 };
 
-
+// const searchProducts = async (req, res) => {
+//     try {
+//         const searchQuery = req.query.search;
+//         if (searchQuery) {
+//             query = { $or: [{ name: { $regex: search, $options: 'i' } }] };
+//         }
+//         //res.redirect('/products ? searchQuery = searchQuery');
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).send('invalis server error');
+//     }
+// }
 
 module.exports = {
     loadProduct,
@@ -566,5 +639,6 @@ module.exports = {
     editProductLoad,
     editProduct,
     deleteProduct, deleteProductVarientByAdmin,
-    viewAllProducts
+    viewAllProducts,
+
 }

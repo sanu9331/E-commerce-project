@@ -84,7 +84,7 @@ const capturePayment = async (req, res) => {
             status: 'pending',
             paymentMethod,
             orderAddress: address,
-            totalAmount: amount,
+            totalAmount: (amount / 100).toFixed(2),
             items: populatedItems,
             orderDate: new Date(),
             quantity: quantity,
@@ -94,6 +94,7 @@ const capturePayment = async (req, res) => {
 
         try {
             await order.save();
+            await Cart.deleteMany({}); // Remove all items from the cart
             res.status(200).json({ message: 'payment completed successfully.' });
 
         } catch (error) {

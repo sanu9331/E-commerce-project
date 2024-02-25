@@ -6,7 +6,7 @@ const Coupon = require("../models/couponModel");
 const mongoose = require('mongoose');
 const { name } = require('ejs');
 const ReturnData = require('../models/ReturnOrder');
-
+const Wallet = require("../models/walletModel");
 
 
 // const loadOrderPlaced = async (req, res) => {
@@ -277,6 +277,23 @@ const cancelOrder = async (req, res) => {
         if (!order) {
             return res.status(404).json({ success: false, message: 'Order not found' });
         }
+        if (order.couponDiscountPrice !== null) {
+            const walletTransaction = new Wallet({
+                paymentType: 'credit',
+                amount: order.couponDiscountPrice,
+                date: new Date(),
+                description: `Refund for order ${orderId}`,
+            });
+            await walletTransaction.save();
+        } else {
+            const walletTransaction = new Wallet({
+                paymentType: 'credit',
+                amount: order.totalAmount,
+                date: new Date(),
+                description: `Refund for order ${orderId}`,
+            });
+            await walletTransaction.save();
+        }
 
         //return res.status(200).json({ success: true, message: 'Order cancelled successfully' });
         req.flash('success', 'Order cancelled successfully');
@@ -430,7 +447,7 @@ const placeOrder = async (req, res) => {
                 status: 'pending',
                 paymentMethod,
                 orderAddress: address,
-                totalAmount: amount,
+                totalAmount: (amount / 100).toFixed(2),
                 items: populatedItems,
                 orderDate: new Date(),
                 quantity: quantity,
@@ -439,6 +456,7 @@ const placeOrder = async (req, res) => {
             console.log('testing 2');
             await order.save();
 
+            await Cart.deleteMany({}); // Remove all items from the cart
             //return res.redirect('/orderPlaced');
             res.json({ success: true });
 

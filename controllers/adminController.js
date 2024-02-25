@@ -570,11 +570,26 @@ const orderStatus = async (req, res) => {
 
 const orderHistorLoad = async (req, res) => {
     try {
-        const { page = 1, limit = 4 } = req.query;
+        const { page = 1, limit = 4, search } = req.query;
 
         const skip = (page - 1) * limit;
 
-        const orders = await Order.find({})
+        let query = {};
+
+        if (search) {
+            query = {
+                $or: [
+                    { 'customer.name': { $regex: search, $options: 'i' } }, // Assuming customer name is a field within the customer object
+                    { status: { $regex: search, $options: 'i' } },
+                    { paymentMethod: { $regex: search, $options: 'i' } },
+                    // You may need to adjust this depending on how you want to search for the total amount
+                    // Add other fields as needed
+
+                ]
+            };
+        }
+
+        const orders = await Order.find(query)
             .skip(skip)
             .limit(limit)
             .populate('customer')
@@ -584,7 +599,7 @@ const orderHistorLoad = async (req, res) => {
         const orderCount = await Order.find({}).count();
         const totalPages = Math.ceil(orderCount / limit);
 
-        return res.render('orderHistory', { orders, orderCount, currentPage: parseInt(page), totalPages, limit: parseInt(limit) });
+        return res.render('orderHistory', { orders, orderCount, currentPage: parseInt(page), totalPages, limit: parseInt(limit), search });
     } catch (error) {
         console.log(error);
     }
@@ -833,8 +848,12 @@ const exportOrdersToPDF = async (req, res) => {
 //custom order excel
 const customOrdersExcel = async (req, res) => {
     try {
-        const startDate = new Date(req.query.startDate);
-        const endDate = new Date(req.query.endDate);
+        const startDate = new Date(req.query.startDate + 'T00:00:00.000Z'); // Ensure start of the day
+        const endDate = new Date(req.query.endDate + 'T23:59:59.999Z'); // Ensure end of the day
+
+
+        console.log('start date=', startDate);
+        console.log('end date=', endDate);
 
         if (!startDate || !endDate) {
             return res.status(400).send('Invalid date format');
@@ -846,6 +865,7 @@ const customOrdersExcel = async (req, res) => {
                 $lte: endDate
             }
         }).populate('customer').populate('items.product');
+
 
         const workbook = new excelJS.Workbook();
         const worksheet = workbook.addWorksheet("My Orders");
@@ -907,8 +927,9 @@ const customOrdersExcel = async (req, res) => {
 //custom order pdf
 const customOrdersToPDF = async (req, res) => {
     try {
-        const startDate = new Date(req.query.startDate);
-        const endDate = new Date(req.query.endDate);
+        const startDate = new Date(req.query.startDate + 'T00:00:00.000Z'); // Ensure start of the day
+        const endDate = new Date(req.query.endDate + 'T23:59:59.999Z'); // Ensure end of the day
+
 
         if (!startDate || !endDate) {
             return res.status(400).send('Invalid date format');

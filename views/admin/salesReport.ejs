@@ -34,11 +34,30 @@
                                 <%= orderCount %>
                             </b></i>
                     </div>
-                    <div class="col-md-auto">
-                        <!-- <a href="#" class="btn btn-warning" style="margin-right: 4rem;">Download Sales Report</a> -->
-                        <button type="button" class="btn btn-warning" style="margin-right: 4rem;" data-bs-toggle="modal"
+
+
+
+
+
+                    <!-- Adjusted Search Form and Download Sales Report Button -->
+                    <div class="col-md-auto d-flex align-items-center">
+                        <form id="searchForm" method="GET" action="/admin/salesReport" class="me-3">
+                            <div class="input-group" style="width: 14rem;">
+                                <input type="search" name="search" class="form-control rounded" placeholder="Search"
+                                    aria-label="Search" aria-describedby="search-addon" />
+                                <button type="submit" class="btn btn-success" data-mdb-ripple-init>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem"
+                                        fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path
+                                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                             data-bs-target="#salesReportModal">Download Sales Report</button>
                     </div>
+
                 </div>
             </div>
 
@@ -119,8 +138,8 @@
                                             <%= order.paymentMethod %>
                                         </td>
                                         <td>
-                                            <!-- $ <%= order.totalAmount %> -->
-                                            $ <%= (order.totalAmount/100).toFixed(2) %>
+                                            $ <%= order.totalAmount %>
+                                            <!-- $ <%= (order.totalAmount/100).toFixed(2) %> -->
                                         </td>
 
                                         <% order.items.forEach(item=> { %>
@@ -151,7 +170,17 @@
                                                 <%= item.quantity %>
                                             </td>
                                             <td>
-                                                $ <%= item.price %>
+                                                <% 
+       
+        if (item.product && item.product.discount) {
+           
+            const discountedPrice = item.price - (item.price * item.product.discount / 100);
+            %>
+            $ <%= discountedPrice %>
+        <% } %>
+                                                <!-- $ <%= item.price %> -->
+                                              
+
                                             </td>
                                             <td>
                                                 <% if (order.status===' Cancelled' ) { %>

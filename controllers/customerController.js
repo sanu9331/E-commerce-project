@@ -17,11 +17,22 @@ const userModel = require("../models/userModel");
 // };
 const loadCustomers = async (req, res) => {
     try {
-        const { page = 1, limit = 5 } = req.query;
+        const { page = 1, search, limit = 5 } = req.query;
         const skip = (page - 1) * limit;
 
+        let query = {};
+
+        if (search) {
+            query = {
+                $or: [
+                    { name: { $regex: search, $options: 'i' } }, // Case-insensitive search for name
+
+                ]
+            };
+        }
+
         const customerData = await userModel
-            .find({ is_admin: 0 })
+            .find({ ...query, is_admin: 0 })
             .skip(skip)
             .limit(limit);
 
@@ -29,7 +40,7 @@ const loadCustomers = async (req, res) => {
         const totalPages = Math.ceil(totalCustomers / limit);
 
         res.render("customers", {
-            customers: customerData,
+            customers: customerData, search,
             currentPage: parseInt(page),
             totalPages,
             limit: parseInt(limit),

@@ -14,13 +14,24 @@ const loadCategory = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = 4; // Set the number of items per page
         const skip = (page - 1) * limit;
+        const search = req.query.search;
 
+        let query = {};
+
+        if (search) {
+            query = {
+                $or: [
+                    { category: { $regex: search, $options: 'i' } },
+                    { sub_Category: { $regex: search, $options: 'i' } }
+                ]
+            };
+        }
 
         const totalCategories = await categoryModel.countDocuments();
         const totalPages = Math.ceil(totalCategories / limit);
-        const CategoryData = await categoryModel.find().skip(skip).limit(limit);
+        const CategoryData = await categoryModel.find(query).skip(skip).limit(limit);
 
-        res.render('category', { CategoryData, totalPages, currentPage: page });
+        res.render('category', { CategoryData, totalPages, currentPage: page, search });
     } catch (error) {
         console.log(error);
     }

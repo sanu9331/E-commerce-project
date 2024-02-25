@@ -26,6 +26,9 @@ const addCoupon = async (req, res) => {
             console.log("error date");
             req.flash('error', 'Please select a valid date');
             return res.redirect('/admin/coupons');
+        } else if (discountPercentage <= 0 || discountPercentage > 100) {
+            req.flash('error', 'enter valid percentage');
+            return res.redirect('/admin/coupons');
         } else {
             const existingCoupon = await Coupon.findOne({ code: couponCode });
 

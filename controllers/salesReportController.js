@@ -4,11 +4,22 @@ const Order = require('../models/orderModel');
 
 const loadSalesReport = async (req, res) => {
     try {
-        const { page = 1, limit = 4 } = req.query;
+        const { page = 1, limit = 4, search } = req.query;
 
         const skip = (page - 1) * limit;
 
-        const orders = await Order.find({})
+        let query = {};
+
+        if (search) {
+            query = {
+                $or: [
+                    { status: { $regex: search, $options: 'i' } }, // Case-insensitive search for name
+                    { paymentMethod: { $regex: search, $options: 'i' } } // Case-insensitive search for description
+                ]
+            };
+        }
+
+        const orders = await Order.find(query)
             .skip(skip)
             .limit(limit)
             .populate('customer')

@@ -89,7 +89,12 @@
                                                                     <% } %>
                                                     </td>
                                                     <td>
-                                                        <%= order.orderDate.toDateString() %>
+                                                        <!-- <%= order.orderDate.toDateString() %> -->
+                                                        <%= new Date(order.orderDate).toLocaleString([], {
+                                                            dateStyle: 'medium' , timeStyle: 'short' }) %>
+
+
+
                                                     </td>
                                                     <td>
                                                         <% if (order.status==='Cancelled' ) { %>

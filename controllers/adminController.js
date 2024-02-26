@@ -405,9 +405,20 @@ const verifyMail = async (req, res) => {
 // }
 const GETloadOrder = async (req, res) => {
     try {
+        const { search } = req.query;
         const userID = req.query.userID;
         console.log('GEtloadOrder :=', userID);
 
+        let query = {};
+
+        if (search) {
+            query = {
+                $or: [{
+                    status: { $regex: search, $options: 'i' },
+                    paymentMethod: { $regex: search, $options: 'i' }
+                }]
+            };
+        }
 
         if (!userID) {
             return res.status(400).send('User ID is required');
@@ -421,9 +432,9 @@ const GETloadOrder = async (req, res) => {
         const limit = 8;
         const skip = (page - 1) * limit;
 
-        const totalOrders = await Order.countDocuments({ 'customer': userID });
+        const totalOrders = await Order.countDocuments({ 'customer': userID, ...query });
 
-        const orders = await Order.find({ 'customer': userID })
+        const orders = await Order.find({ 'customer': userID, ...query })
             .populate('customer')
             .populate({ path: 'items.product', model: 'Product' })
             .sort({ orderDate: -1 })

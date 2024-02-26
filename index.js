@@ -46,7 +46,7 @@ const app = express();
 
 require('dotenv').config();
 
-
+const port = process.env.PORT || 3000;
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const nocache = require("nocache");
@@ -93,6 +93,6 @@ app.use('/', userSession, userRoute);
 const adminRoute = require('./routes/adminRoute');
 app.use('/admin', adminSession, adminRoute);
 
-app.listen(3000, function () {
-    console.log('server is running on port 3000');
+app.listen(port, function () {
+    console.log(`Server is running on port ${port}`);
 });

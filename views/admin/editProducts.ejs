@@ -58,8 +58,8 @@
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="price">Price</label>
-                                                <input type="text" value="<%=ProductData.price%>" class="form-control"
-                                                    id="price" name="price">
+                                                <input type="number" value="<%=ProductData.price%>" class="form-control"
+                                                    id="price" name="price" min="0">
                                                 <div id="priceWarning" class="text-danger"></div>
 
                                             </div>
@@ -139,33 +139,35 @@
                                             <div class="form-group">
                                                 <label for="discount">Discount</label>
                                                 <input type="number" value="<%=ProductData.discount%>"
-                                                    class="form-control" id="discount" name="discount">
+                                                    class="form-control" id="discount" name="discount" min="0">
                                                 <div id="discountWarning" class="text-danger"></div>
 
                                             </div>
                                         </div>
+
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="status">Status</label>
                                                 <select class="select form-control" id="status" name="status">
-                                                    <option value="true">
-                                                        <%=ProductData.status%>
-                                                    </option>
-
-                                                    <option value="false">false</option>
-
-                                                    <!-- Add more options here -->
+                                                    <% if (ProductData.status===true) { %>
+                                                        <option value="true" selected>true</option>
+                                                        <option value="false">false</option>
+                                                        <% } else { %>
+                                                            <option value="true">true</option>
+                                                            <option value="false" selected>false</option>
+                                                            <% } %>
+                                                                <!-- Add more options here if needed -->
                                                 </select>
                                                 <div id="statusWarning" class="text-danger"></div>
-
                                             </div>
                                         </div>
+
 
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="stockQuantity">Stock Quantity</label>
                                                 <input type="number" value="<%=ProductData.stock  %>"
-                                                    class="form-control" id="stockQuantity" name="stock">
+                                                    class="form-control" id="stockQuantity" name="stock" min="0">
                                                 <div id="stockWarning" class="text-danger"></div>
 
                                             </div>
@@ -196,42 +198,42 @@
                                                     <option value="" <%=!ProductData.variants ||
                                                         !ProductData.variants[0] ? 'selected' : '' %>>Select</option>
                                                     %>>Select</option>
-                                                    <option value="Red" <%=ProductData.variants &&
+                                                    <option value="red" <%=ProductData.variants &&
                                                         ProductData.variants[0] && ProductData.variants[0].color==='Red'
                                                         ? 'selected' : '' %>>Red</option>
                                                     <option value="Blue" <%=ProductData.variants &&
                                                         ProductData.variants[0] &&
-                                                        ProductData.variants[0].color==='Blue' ? 'selected' : '' %>
+                                                        ProductData.variants[0].color==='blue' ? 'selected' : '' %>
                                                         >Blue
                                                     </option>
                                                     <option value="Black" <%=ProductData.variants &&
                                                         ProductData.variants[0] &&
-                                                        ProductData.variants[0].color==='Black' ? 'selected' : '' %>
+                                                        ProductData.variants[0].color==='black' ? 'selected' : '' %>
                                                         >Black
                                                     </option>
                                                     <option value="Green" <%=ProductData.variants &&
                                                         ProductData.variants[0] &&
-                                                        ProductData.variants[0].color==='Green' ? 'selected' : '' %>
+                                                        ProductData.variants[0].color==='green' ? 'selected' : '' %>
                                                         >Green
                                                     </option>
                                                     <option value="Yellow" <%=ProductData.variants &&
                                                         ProductData.variants[0] &&
-                                                        ProductData.variants[0].color==='Yellow' ? 'selected' : '' %>
+                                                        ProductData.variants[0].color==='yellow' ? 'selected' : '' %>
                                                         >Yellow
                                                     </option>
                                                     <option value="Purple" <%=ProductData.variants &&
                                                         ProductData.variants[0] &&
-                                                        ProductData.variants[0].color==='Purple' ? 'selected' : '' %>
+                                                        ProductData.variants[0].color==='purple' ? 'selected' : '' %>
                                                         >Purple
                                                     </option>
                                                     <option value="Orange" <%=ProductData.variants &&
                                                         ProductData.variants[0] &&
-                                                        ProductData.variants[0].color==='Orange' ? 'selected' : '' %>
+                                                        ProductData.variants[0].color==='orange' ? 'selected' : '' %>
                                                         >Orange
                                                     </option>
                                                     <option value="Pink" <%=ProductData.variants &&
                                                         ProductData.variants[0] &&
-                                                        ProductData.variants[0].color==='Pink' ? 'selected' : '' %>
+                                                        ProductData.variants[0].color==='pink' ? 'selected' : '' %>
                                                         >Pink
                                                     </option>
                                                 </select>

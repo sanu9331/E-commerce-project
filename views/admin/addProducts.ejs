@@ -16,6 +16,44 @@
     <!-- Include Cropper.js CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 
+    <style>
+        #imagePreviews {
+            display: flex;
+            /* Use flexbox */
+            flex-wrap: nowrap;
+            /* Prevent wrapping to next line */
+            overflow-x: auto;
+            /* Enable horizontal scrolling */
+            max-width: 100%;
+            /* Adjust as needed */
+            margin-bottom: 10px;
+            /* Adjust spacing */
+            background-color: rgb(237, 234, 234);
+        }
+
+        #imagePreviews>div {
+            margin-right: 10px;
+            /* Adjust spacing between images */
+        }
+
+        #imagePreviews>div:last-child {
+            margin-right: 0;
+            /* Remove margin for last child */
+        }
+
+        #imagePreviews img {
+            max-width: 150px;
+            /* Adjust max-width as needed */
+            max-height: 150px;
+            /* Adjust max-height as needed */
+            margin-right: 10px;
+            /* Add gap between images */
+
+        }
+    </style>
+
+
+
 </head>
 
 <body>
@@ -58,7 +96,8 @@
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="price">Price</label>
-                                                <input type="number" class="form-control" id="price" name="price" />
+                                                <input type="number" class="form-control" id="price" name="price"
+                                                    min="0" />
                                                 <div id="priceWarning" class="text-danger"></div>
                                             </div>
                                         </div>
@@ -129,8 +168,8 @@
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="discount">Discount</label>
-                                                <input type="number" class="form-control" id="discount"
-                                                    name="discount" />
+                                                <input type="number" class="form-control" id="discount" name="discount"
+                                                    min="0" max="100" />
                                                 <div id="discountWarning" class="text-danger"></div>
                                             </div>
                                         </div>
@@ -150,7 +189,7 @@
                                             <div class="form-group">
                                                 <label for="stockQuantity">Stock Quantity</label>
                                                 <input type="number" class="form-control" id="stockQuantity"
-                                                    name="stock" />
+                                                    name="stock" min="0" />
                                                 <div id="stockWarning" class="text-danger"></div>
                                             </div>
                                         </div>
@@ -200,6 +239,9 @@
                                                 <input type="hidden" id="croppedImageData" name="croppedImageData" />
 
                                             </div>
+                                            <div id="imagePreviews">
+                                            </div>
+
                                             <div id="imagesWarning" class="text-danger"></div>
 
                                         </div>
@@ -216,6 +258,7 @@
                                             </div>
                                         </div>
 
+
                                     </div>
 
                                 </form>
@@ -231,14 +274,14 @@
                         <!-- Image Cropping Modal -->
                         <div class="modal fade" id="imageCropModal" tabindex="-1" aria-labelledby="imageCropModalLabel"
                             aria-hidden="true">
-                            <div class="modal-dialog modal-lg" style="max-width: 400px;">
+                            <div class="modal-dialog modal-lg" style="max-width: 500px;">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="imageCropModalLabel">Crop Image</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
+                                    <div class="modal-body" style="max-width: 450px;">
                                         <img id="imageToCrop" src="" alt="Crop Image" class="img-fluid" />
                                     </div>
                                     <div class="modal-footer">
@@ -259,81 +302,73 @@
 
     <script>
         document.getElementById('images').addEventListener('change', function (event) {
-            var files = event.target.files;
-            var totalImages = Math.min(files.length, 4); // Limit to 4 images
-            var croppedImages = 0;
+            const files = event.target.files;
+            const totalImages = Math.min(files.length, 4); // Limit to 4 images
+            let currentIndex = 0;
 
-            // Clear existing hidden input fields for cropped images
-            var existingCroppedImageDataInputs = document.querySelectorAll('input[name="croppedImageData[]"]');
-            existingCroppedImageDataInputs.forEach(input => input.remove());
+            const modal = new bootstrap.Modal(document.getElementById('imageCropModal'));
+            modal.show();
 
-            if (totalImages > 0) {
-                Array.from(files).slice(0, totalImages).forEach(file => { // Process only the first 4 images
-                    var reader = new FileReader();
+            const cropper = new Cropper(document.getElementById('imageToCrop'), {
+                aspectRatio: 16 / 9,
+                viewMode: 1,
+                crossOrigin: '', // Remove CORS-related image icon
+                // Other Cropper.js options...
+            });
+
+            loadNextImage();
+
+            function loadNextImage() {
+                if (currentIndex < totalImages) {
+                    const file = files[currentIndex];
+                    const reader = new FileReader();
 
                     reader.onload = function (event) {
-                        var imageUrl = event.target.result;
-                        var imageToCrop = document.createElement('img');
-                        imageToCrop.src = imageUrl;
-                        document.getElementById('imageCropModal').querySelector('.modal-body').appendChild(imageToCrop);
-
-                        var cropper = new Cropper(imageToCrop, {
-                            aspectRatio: 16 / 9,
-                            viewMode: 1,
-                            dragMode: 'move',
-                            autoCropArea: 1,
-                            scalable: true,
-                            zoomable: true,
-                            minContainerWidth: 300,
-                            minContainerHeight: 300,
-                            toggleDragModeOnDblclick: false
-                        });
-
-                        document.getElementById('cropImageBtn').addEventListener('click', cropAndProceed);
-
-                        function cropAndProceed() {
-                            var croppedCanvas = cropper.getCroppedCanvas();
-
-                            // Check if the cropped canvas contains any data
-                            if (croppedCanvas.toDataURL() !== 'data:,') {
-                                var croppedImageData = croppedCanvas.toDataURL();
-
-                                // Set the cropped image data to the hidden input field
-                                var croppedImageDataInput = document.createElement('input');
-                                croppedImageDataInput.type = 'hidden';
-                                croppedImageDataInput.name = 'croppedImageData[]';
-                                croppedImageDataInput.value = croppedImageData;
-                                document.getElementById('ProductForm').appendChild(croppedImageDataInput);
-
-                                // Increment the counter for cropped images
-                                croppedImages++;
-                            }
-
-                            // Remove the image and cropper from the modal
-                            cropper.destroy();
-                            document.getElementById('imageCropModal').querySelector('.modal-body').removeChild(imageToCrop);
-
-                            // Check if all images are cropped
-                            if (croppedImages === totalImages) {
-                                document.getElementById('addProductBtn').removeAttribute('disabled');
-                            }
-
-                            // Detach event listener to prevent multiple listeners on the same button
-                            document.getElementById('cropImageBtn').removeEventListener('click', cropAndProceed);
-                        }
-
-                        // Show the cropping modal
-                        var modal = new bootstrap.Modal(document.getElementById('imageCropModal'));
-                        modal.show();
+                        const imageUrl = event.target.result;
+                        cropper.replace(imageUrl);
                     };
 
                     reader.readAsDataURL(file);
-                });
+                    currentIndex++;
+                } else {
+                    modal.hide();
+                }
             }
+
+            document.getElementById('cropImageBtn').onclick = function () {
+                const croppedCanvas = cropper.getCroppedCanvas();
+                const croppedImage = new Image();
+                croppedImage.src = croppedCanvas.toDataURL();
+
+                croppedImage.onload = function () {
+                    croppedImage.width = 200; // Set width as needed
+                    croppedImage.height = 200; // Set height as needed
+
+                    // Append the cropped image below the corresponding original image
+                    const imagePreviewContainer = document.createElement('div');
+                    imagePreviewContainer.appendChild(croppedImage);
+
+                    document.getElementById('imagePreviews').appendChild(imagePreviewContainer);
+
+                    // Load the next image
+                    loadNextImage();
+                };
+            };
         });
-
-
     </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <script>
         function closeFlashMessage() {

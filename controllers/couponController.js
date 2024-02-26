@@ -111,8 +111,27 @@ const applyCoupon = async (req, res) => {
     }
 }
 
+const couponDelete = async (req, res) => {
+    try {
+        const couponId = req.params.couponId;
+        console.log('coupon id=', couponId);
 
+        const coupon = await Coupon.findById(couponId);
+
+        // if (!coupon) {
+        //     return res.status(404).send({ error: 'Coupon not found' });
+        // }
+
+        // Delete the coupon
+        await Coupon.deleteOne({ _id: couponId });
+        return res.redirect('/admin/coupons');
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('invalid server error');
+
+    }
+}
 
 module.exports = {
-    loadCoupons, addCoupon, applyCoupon
+    loadCoupons, addCoupon, applyCoupon, couponDelete
 }

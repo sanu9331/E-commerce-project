@@ -53,11 +53,29 @@ const loadHome = async (req, res) => {
 const loadProductListsByCategory = async (req, res) => {
     try {
         const { cat_name } = req.params;
-        const { page = 1, limit = 3 } = req.query;
+        let { page = 1, limit = 3, min, max } = req.query;
         const skip = (page - 1) * limit;
 
-        const ProductData = await productModel.find({ category: cat_name }).skip(skip).limit(limit);
-        const ProductCount = await productModel.find({ category: cat_name }).countDocuments();
+        // Convert min and max to numbers
+        min = parseFloat(min);
+        max = parseFloat(max);
+
+        // Construct the query object
+        const query = { category: cat_name };
+
+        // Add price range conditions if min and max are provided
+        if (!isNaN(min)) {
+            query.discountPrice = { $gte: min };
+        }
+        if (!isNaN(max)) {
+            query.discountPrice = { ...query.discountPrice, $lte: max };
+        }
+        console.log('query=', query);
+        // Fetch products based on the constructed query
+        const ProductData = await productModel.find(query)
+            .skip(skip)
+            .limit(limit);
+        const ProductCount = await productModel.countDocuments(query);
         const category = await categoryModel.find({ category: cat_name });
 
         const result = await productModel.aggregate([
@@ -98,12 +116,15 @@ const loadProductListsByCategory = async (req, res) => {
             brandCount,
             currentPage: parseInt(page),
             totalPages,
-            limit: parseInt(limit), cat_name
+            limit: parseInt(limit),
+            cat_name
         });
     } catch (error) {
         console.error(error);
     }
 };
+
+
 
 
 

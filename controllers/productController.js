@@ -43,6 +43,7 @@ const loadProduct = async (req, res) => {
     try {
         const { sortBy, search, page = 1, limit = 5 } = req.query;
         const skip = (page - 1) * limit;
+        let { min, max } = req.query;
 
         let query = {};
 
@@ -53,6 +54,16 @@ const loadProduct = async (req, res) => {
                     { brand: { $regex: search, $options: 'i' } } // Case-insensitive search for description
                 ]
             };
+        }
+
+        min = parseFloat(min);
+        max = parseFloat(max);
+
+        if (!isNaN(min)) {
+            query.discountPrice = { $gte: min };
+        }
+        if (!isNaN(max)) {
+            query.discountPrice = { ...query.discountPrice, $lte: max };
         }
 
         const ProductData = await productModel
@@ -154,101 +165,68 @@ const addProductLoad = async (req, res) => {
 //         console.error(error);
 //     }
 // };
+
 const addProduct = async (req, res) => {
     try {
-        // Extract product data from request body
-
-
+        const { price, discount, status, stock, } = req.body;
         const name = req.body.name.trim().toLowerCase();
         const description = req.body.description.trim();
         const brand = req.body.brand.trim().toLowerCase();
         const color = req.body.color.trim().toLowerCase();
-        const category = req.body.category;
-        const discount = req.body.discount;
-        const status = req.body.status;
-        const stock = req.body.stock;
-        const price = req.body.price;
 
-        console.log('Name:', name);
-        console.log('Description:', description);
-        console.log('Brand:', brand);
-        console.log('Color:', color);
-        console.log('Category:', category);
-        console.log('Discount:', discount);
-        console.log('Status:', status);
-        console.log('Stock:', stock);
-        console.log('Price:', price);
-
-        // Check if any required field is missing
-        if (!name || !price || !brand || !discount || !stock || !description || !color || !category) {
+        if (!name || !price || !brand || !discount || !stock || !description || !color) {
             req.flash('error', 'All fields must be filled out.');
-            return res.redirect('/admin/products/add');
+            return res.redirect(`/admin/products/edit/${id}`);
         }
-
-        // Check if price is negative
-        if (price <= 0) {
-            req.flash('error', 'Enter a valid price.');
+        if (price < 0) {
+            req.flash('error', 'enter valid price');
             return res.redirect('/admin/products/add');
         } else if (discount < 0) {
-            req.flash('error', 'Enter a valid discount.');
+            req.flash('error', 'enter valid discount');
+            return res.redirect('/admin/products/add');
+        } else if (stock < 0) {
+            req.flash('error', 'enter valid stock');
             return res.redirect('/admin/products/add');
         }
 
-        // Find the category data
-        const categoryData = await categoryModel.findOne({ category });
-
-        // Get the filenames of the uploaded images
+        const category = req.body.category;
+        const categoryData = await categoryModel.findOne({ category: category });
         const images = req.files.map(file => file.filename);
+        let ProductData = await productModel.findOne({ name });
 
-        // Initialize an array to store cropped images for each variant
-        const croppedImages = req.body.croppedImageData || [];
-
-        // Filter out null values from croppedImages
-        const filteredCroppedImages = croppedImages.filter(imageData => !!imageData);
-
-        // Find the product data by name
-        let productData = await productModel.findOne({ name });
-
-        // If product doesn't exist, create a new one
-        if (!productData) {
-            productData = new productModel({
-                name,
-                variants: [{
-                    color,
-                    images: filteredCroppedImages  // Store cropped images for the first variant
-                }],
-                description,
+        if (!ProductData) {
+            console.log(images);
+            ProductData = new productModel({
+                name: name,
+                variants: [{ color: color, images }],
+                description: description,
                 price: parseFloat(price),
                 category: categoryData.category,
-                brand,
+                brand: brand,
                 discount: parseInt(discount),
-                status,
+                status: status,
                 stock: parseInt(stock),
+                discountPrice: price * (1 - (discount / 100))
+
             });
         } else {
-            // Find existing variant with the same color
-            const existingVariantIndex = productData.variants.findIndex(variant => variant.color === color);
+            // If the product exists, add a new color variant or update an existing one
+            const existingVariant = ProductData.variants.find(variant => variant.color === color);
 
-            if (existingVariantIndex !== -1) {
-                // Update cropped images for existing variant
-                productData.variants[existingVariantIndex].images = filteredCroppedImages;
+            if (existingVariant) {
+                // If the color variant already exists, append the images to it
+                existingVariant.images = existingVariant.images.concat(images);
             } else {
-                // Add new variant with cropped images
-                productData.variants.push({
-                    color,
-                    images: filteredCroppedImages
-                });
+                // If the color variant doesn't exist, create a new one
+                ProductData.variants.push({ color, images });
             }
         }
 
-        // Save the product data
-        await productData.save();
-
-        // Redirect to products page after successful addition
+        await ProductData.save();
         res.redirect("/admin/products");
+
     } catch (error) {
         console.error(error);
-        // Handle error appropriately
     }
 };
 
@@ -482,11 +460,14 @@ const editProduct = async (req, res) => {
         const description = req.body.description.trim();
         const brand = req.body.brand.trim().toLowerCase();
         const color = req.body.color.trim().toLowerCase();
+        console.log('color==', color);
         // Get new images
         const newImages = req.files.map(file => file.filename);
 
         // Get existing images from the form
         const existingImages = req.body.existingImages ? req.body.existingImages.split(',') : [];
+        console.log('EI==', req.body.existingImages);
+
 
         // Fetch product data
         const productData = await productModel.findOne({ _id: id }).populate('category');
@@ -494,8 +475,18 @@ const editProduct = async (req, res) => {
         // Validate input fields
         if (!name || !price || !brand || !discount || !stock || !description || !color) {
             req.flash('error', 'All fields must be filled out.');
-            return res.redirect(`/ admin / products / edit / ${id}`);
+            return res.redirect(`/admin/products/edit/${id}`);
+        } else if (price <= 0) {
+            req.flash('error', 'enter a valid price.');
+            return res.redirect(`/admin/products/edit/${id}`);
+        } else if (discount <= 0) {
+            req.flash('error', 'enter a valid discount.');
+            return res.redirect(`/admin/products/edit/${id}`);
+        } else if (stock <= 0) {
+            req.flash('error', 'enter a valid stock.');
+            return res.redirect(`/admin/products/edit/${id}`);
         }
+
 
 
 
@@ -570,12 +561,13 @@ const deleteProductVarientByAdmin = async (req, res) => {
 
     try {
         const { id, color } = req.query;
+        console.log('id,color ==', req.query);
         const result = await productModel.updateOne(
             { _id: id },
             { $pull: { variants: { color: color } } }
         );
         if (result) {
-            res.redirect(`/ admin / products / edit / ${id}`)
+            res.redirect(`/admin/products/edit/${id}`)
         }
     } catch (error) {
         console.error(`Error deleting variant: ${error.message}`);
@@ -585,7 +577,7 @@ const deleteProductVarientByAdmin = async (req, res) => {
 
 const viewAllProducts = async (req, res) => {
     try {
-        const { sortBy, search, page = 1, limit = 5 } = req.query;
+        const { sortBy, search, page = 1, limit = 8, min, max } = req.query;
         let query = {};
 
 
@@ -593,6 +585,13 @@ const viewAllProducts = async (req, res) => {
             query = { $or: [{ name: { $regex: search, $options: 'i' } }] };
         }
 
+        if (min && max) {
+            query.discountPrice = { $gte: parseInt(min), $lte: parseInt(max) };
+        } else if (min) {
+            query.discountPrice = { $gte: parseInt(min) };
+        } else if (max) {
+            query.discountPrice = { $lte: parseInt(max) };
+        }
 
         const skip = (page - 1) * limit;
 

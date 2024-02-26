@@ -136,114 +136,124 @@
         <%- include('../layouts/header.ejs') %>
     </header>
     <main>
-        <div class="container text-center mb-5">
-            <div class="row">
+        <div class="container text-center mb-5" style="margin-top: 2rem;">
+            <div class="row align-items-center">
                 <div class="col">
                     <h3 class="mt-5 fs-5 text-start">All Products</h3>
                 </div>
 
-                <!-- <div class="main-search-input-wrap" style="background-color: bisque; ">
-                    <div class="main-search-input fl-wrap" style="background-color: aquamarine;">
-                        <div class="main-search-input-item">
-                            <input type="text" id="searchInput" value="" placeholder="Search Products..."
-                                style="width: 150px; background-color: aqua;">
+                <!-- Filter by Min and Max Price -->
+                <div class="col-md-6  d-flex justify-content-end">
+                    <form action="/viewAllProducts" method="get">
+                        <div class="filter-content collapse show" id="collapse_3"
+                            style="display: inline-block; background-color: whitesmoke">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Min</label>
+                                        <input class="form-control" placeholder="$0" type="number" name="min" min="0"
+                                            style="width: 7rem;">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Max</label>
+                                        <input class="form-control" placeholder="$1,0000" type="number" name="max"
+                                            min="0" style="width: 7rem;">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-block btn-outline-secondary">Apply</button>
+                            </div>
                         </div>
-                        <button class="main-search-button" id="searchButton">Search</button>
-                    </div>
-                </div> -->
-
-                <!-- <div class="main-search-input fl-wrap"
-                    style="background-color: aquamarine; margin-top: 29px;width: 30%;">
-                    <div class="main-search-input-item">
-                        <input type="text" id="searchInput" value="" placeholder="Search Products..."
-                            style="width: 150px; background-color: aqua;">
-                    </div>
-                    <button class="main-search-button" id="searchButton">Search</button>
-                </div> -->
-                <div class="main-search-input fl-wrap" style="margin-top: 29px;width: 30%;">
-                    <div class="main-search-input-item">
-                        <input type="text" id="searchInput" value="" placeholder="Search Products..."
-                            style="width: 150px;">
-                    </div>
-                    <button class="main-search-button" id="searchButton">Search</button>
+                    </form>
                 </div>
 
-                <header class="border-bottom mb-4 pb-3">
-                    <div class="form-inline">
-                        <span style="padding-top: 10px;" class="mr-md-auto">
-
-                        </span>
-                        <div class="d-flex justify-content-end">
-                            <select id="sortSelect" style="width: 150px;" class="me-3 mt-3 form-control">
-                                <option value="sort by" <% if (sortBy==='sort by' ) { %>selected<% } %>>sortby
-                                </option>
-                                <option value="highest" <% if (sortBy==='highest' ) { %>selected<% } %>>Highest price
-                                </option>
-                                <option value="lowest" <% if (sortBy==='lowest' ) { %>selected<% } %>>Lowest price
-                                </option>
-                                <option value="best selling">Best selling</option>
-                                <option value="most rated">Most Rated</option>
-                            </select>
-                        </div>
+                <!-- Sort and Search elements -->
+                <div class="col-md-3">
+                    <!-- Sort dropdown -->
+                    <select id="sortSelect" class="form-select mb-3">
+                        <option value="sort by" <% if (sortBy==='sort by' ) { %>selected<% } %>>Sort by</option>
+                        <option value="highest" <% if (sortBy==='highest' ) { %>selected<% } %>>Highest Price</option>
+                        <option value="lowest" <% if (sortBy==='lowest' ) { %>selected<% } %>>Lowest Price</option>
+                        <option value="best selling">Best Selling</option>
+                        <option value="most rated">Most Rated</option>
+                    </select>
+                    <!-- Search input -->
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search Products..." id="searchInput">
+                        <button class="btn btn-primary" type="button" id="searchButton">Search</button>
                     </div>
-                </header>
+                </div>
+            </div>
+        </div>
 
 
-
+        <!-- Product cards and pagination -->
+        <div class="container">
+            <div class="row">
                 <% productData.forEach(product=> { %>
+                    <% if (product.status===true) { %>
+                        <div
+                            class="col-md-5 col-lg-4 col-xl-3 col-xxl-3 mb-lg mb-md-6 col-sm-6 col-12 product-container">
+                            <!-- Use col-lg-4 to include three cards in one row -->
+                            <a href="/home/product/details/<%=product._id%>" class="text-decoration-none text-dark">
+                                <div class="card border-0 h-100 p-2 " id="product-card">
 
-                    <div class="col-md-5 col-lg-4 col-xl-3 col-xxl-3 mb-lg mb-md-6 col-sm-6 col-12 product-container">
-                        <!-- Use col-lg-4 to include three cards in one row -->
-                        <a href="/home/product/details/<%=product._id%>" class="text-decoration-none text-dark">
-                            <div class="card border-0 h-100 p-2 " id="product-card">
-
-                                <!-- <img style="margin-bottom: 5px; background-size: cover;" width="50px" height="230px"
+                                    <!-- <img style="margin-bottom: 5px; background-size: cover;" width="50px" height="230px"
                                     class="card-img-top"
                                     src="/images/productImages/<%= product.variants[0].images[0] %>"
                                     alt="Product Image " /> -->
-                                <% if (product.variants[0].images[0].startsWith('data:image/')) { %>
-                                    <img style="margin-bottom: 5px; background-size: cover;" width="50px" height="230px"
-                                        class="card-img-top" src="<%= product.variants[0].images[0] %>" />
-                                    <% } else { %>
+                                    <% if (product.variants[0].images[0].startsWith('data:image/')) { %>
                                         <img style="margin-bottom: 5px; background-size: cover;" width="50px"
                                             height="230px" class="card-img-top"
-                                            src="/images/productImages/<%= product.variants[0].images[0] %>" />
-                                        <% } %>
+                                            src="<%= product.variants[0].images[0] %>" />
+                                        <% } else { %>
+                                            <img style="margin-bottom: 5px; background-size: cover;" width="50px"
+                                                height="230px" class="card-img-top"
+                                                src="/images/productImages/<%= product.variants[0].images[0] %>" />
+                                            <% } %>
 
 
-                                            <div class="card-body" style="height: 130px;">
-                                                <h6>
-                                                    <%= product.name.substring(0, 40, product.name.length / 2) %>
-                                                </h6>
-                                                <p class="card-text"
-                                                    data-price="<%= Number(product.price - (product.price * (product.discount / 100)))%>">
-                                                    Price: <b>Rs:<%= Number(product.price - (product.price *
-                                                            (product.discount / 100))).toLocaleString() %></b></p>
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="card-text text-success">%<%= product.discount %> off</p>
-                                                    <p class="small text-danger"><s>Rs<%= product.price %></s></p>
+                                                <div class="card-body" style="height: 130px;">
+                                                    <h6>
+                                                        <%= product.name.substring(0, 40, product.name.length / 2) %>
+                                                    </h6>
+                                                    <p class="card-text"
+                                                        data-price="<%= Number(product.price - (product.price * (product.discount / 100)))%>">
+                                                        Price: <b>Rs:<%= Number(product.price - (product.price *
+                                                                (product.discount / 100))).toLocaleString() %></b></p>
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="card-text text-success">%<%= product.discount %> off
+                                                        </p>
+                                                        <p class="small text-danger"><s>Rs<%= product.price %></s></p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                        </a>
+                            </a>
 
 
 
-                        <!-- Inside the loop where you render product details -->
-                        <!-- <button class=" btn btn-outline-primary addToCartButton"
+                            <!-- Inside the loop where you render product details -->
+                            <!-- <button class=" btn btn-outline-primary addToCartButton"
                             data-product-id="<%= product._id %>"
                             data-product-price="<%= Number(product.price - (product.price * (product.discount / 100))) %>">Add
                             to Cart</button> -->
 
 
-                    </div>
+                        </div>
+
+
             </div>
-            <% }); %>
+            <% } %>
+                <% }); %>
 
 
 
-                <!-- Pagination code -->
-                <div class="container mt-4">
-                    <!-- <nav aria-label="Page navigation">
+        </div>
+        </div>
+
+
+
+        <!-- Pagination code -->
+        <div class="container mt-4">
+            <!-- <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center">
                             <% if (currentPage> 1) { %>
                                 <li class="page-item">
@@ -275,59 +285,56 @@
                                                 <% } %>
                         </ul>
                     </nav> -->
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center">
-                            <% if (currentPage> 1) { %>
-                                <li class="page-item">
-                                    <a class="page-link"
-                                        href="/viewAllProducts?page=<%= currentPage - 1 %>&sortBy=<%= sortBy %>&search=<%= search %>"
-                                        aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                <% } %>
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <% if (currentPage> 1) { %>
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="/viewAllProducts?page=<%= currentPage - 1 %>&sortBy=<%= sortBy %>&search=<%= search %>"
+                                aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <% } %>
 
-                                    <% const maxPagesToShow=1; // Set the maximum number of pages to display %>
-                                        <% const startPage=Math.max(1, currentPage - maxPagesToShow); %>
-                                            <% const endPage=Math.min(totalPages, startPage + maxPagesToShow * 2 - 1);
-                                                %>
+                            <% const maxPagesToShow=1; // Set the maximum number of pages to display %>
+                                <% const startPage=Math.max(1, currentPage - maxPagesToShow); %>
+                                    <% const endPage=Math.min(totalPages, startPage + maxPagesToShow * 2 - 1); %>
 
-                                                <% if (startPage> 1) { %>
-                                                    <li class="page-item disabled">
-                                                        <span class="page-link">...</span>
+                                        <% if (startPage> 1) { %>
+                                            <li class="page-item disabled">
+                                                <span class="page-link">...</span>
+                                            </li>
+                                            <% } %>
+
+                                                <% for (let i=startPage; i <=endPage; i++) { %>
+                                                    <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                                        <a class="page-link"
+                                                            href="/viewAllProducts?page=<%= i %>&sortBy=<%= sortBy %>&search=<%= search %>">
+                                                            <%= i %>
+                                                        </a>
                                                     </li>
                                                     <% } %>
 
-                                                        <% for (let i=startPage; i <=endPage; i++) { %>
-                                                            <li
-                                                                class="page-item <%= i === currentPage ? 'active' : '' %>">
-                                                                <a class="page-link"
-                                                                    href="/viewAllProducts?page=<%= i %>&sortBy=<%= sortBy %>&search=<%= search %>">
-                                                                    <%= i %>
-                                                                </a>
+                                                        <% if (endPage < totalPages) { %>
+                                                            <li class="page-item disabled">
+                                                                <span class="page-link">...</span>
                                                             </li>
                                                             <% } %>
 
-                                                                <% if (endPage < totalPages) { %>
-                                                                    <li class="page-item disabled">
-                                                                        <span class="page-link">...</span>
+                                                                <% if (currentPage < totalPages) { %>
+                                                                    <li class="page-item">
+                                                                        <a class="page-link"
+                                                                            href="/viewAllProducts?page=<%= currentPage + 1 %>&sortBy=<%= sortBy %>&search=<%= search %>"
+                                                                            aria-label="Next">
+                                                                            <span aria-hidden="true">&raquo;</span>
+                                                                        </a>
                                                                     </li>
                                                                     <% } %>
+                </ul>
+            </nav>
 
-                                                                        <% if (currentPage < totalPages) { %>
-                                                                            <li class="page-item">
-                                                                                <a class="page-link"
-                                                                                    href="/viewAllProducts?page=<%= currentPage + 1 %>&sortBy=<%= sortBy %>&search=<%= search %>"
-                                                                                    aria-label="Next">
-                                                                                    <span
-                                                                                        aria-hidden="true">&raquo;</span>
-                                                                                </a>
-                                                                            </li>
-                                                                            <% } %>
-                        </ul>
-                    </nav>
-
-                </div>
+        </div>
 
         </div>
 

@@ -55,6 +55,9 @@ const productSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    discountPrice: {
+        type: Number
+    }
 
 });
 

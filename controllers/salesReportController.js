@@ -29,7 +29,7 @@ const loadSalesReport = async (req, res) => {
         const orderCount = await Order.find({}).count();
         const totalPages = Math.ceil(orderCount / limit);
 
-        return res.render('salesReport', { orders, orderCount, currentPage: parseInt(page), totalPages, limit: parseInt(limit) });
+        return res.render('salesReport', { orders, orderCount, currentPage: parseInt(page), totalPages, limit: parseInt(limit), search });
         // res.render('salesReport');
     } catch (error) {
         console.log(error);

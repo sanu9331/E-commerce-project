@@ -31,6 +31,29 @@
                             style="font-size: 2rem; width: 13rem; min-width: 3rem; text-align: center; font-family: Arial, Helvetica, sans-serif;">
                             Product List</h1>
 
+                        <!-- <form action="/viewAllProducts" method="get">
+                            <div class="filter-content collapse show" id="collapse_3"
+                                style="background-color: whitesmoke">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Min</label>
+                                            <input class="form-control" placeholder="$0" type="number" name="min"
+                                                min="0" style="width: 7rem;">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Max</label>
+                                            <input class="form-control" placeholder="$1,0000" type="number" name="max"
+                                                min="0" style="width: 7rem;">
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-block btn-outline-secondary">Apply</button>
+
+                                </div>
+                            </div>
+                        </form> -->
+
 
 
 
@@ -52,9 +75,6 @@
 
                         </div>
 
-
-
-
                         <div style="margin-left: 1rem;">
                             <form method="" action="/admin/Products/add">
                                 <button class="btn btn-success mb-2" data-toggle="modal"
@@ -63,6 +83,39 @@
                             </form>
                         </div>
                     </div>
+
+                    <div class="d d-flex justify-content-end">
+                        <form action="/admin/Products" method="get">
+                            <div class="filter-content collapse show" id="collapse_3"
+                                style="background-color: whitesmoke; width: 16rem;">
+                                <div class="card-body">
+                                    <div class="row justify-content-end">
+                                        <!-- Changed class to 'justify-content-end' -->
+                                        <div class="col-md-6"> <!-- Changed column class -->
+                                            <label>Min</label>
+                                            <input class="form-control" placeholder="$0" type="number" name="min"
+                                                min="0">
+                                        </div>
+                                        <div class="col-md-6"> <!-- Changed column class -->
+                                            <label>Max</label>
+                                            <input class="form-control" placeholder="$1,0000" type="number" name="max"
+                                                min="0">
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-block btn-outline-secondary btn-sm"
+                                        style="margin-top: 5px;">Apply</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div><br>
+
+
+
+
+
+
+
                     <div class="table-responsive">
                         <% if (ProductData.length===0) { %>
                             <div class="alert alert-warning" role="alert">
@@ -85,12 +138,14 @@
                                                 <td>
                                                     <%= index + 1 %>
                                                 </td>
-                                                <% if (product.variants.length> 0 && product.variants[0].images.length >
+                                                <% if (product.variants.length> 0 &&
+                                                    product.variants[0].images.length >
                                                     0)
                                                     { %>
                                                     <% if (product.variants[0].images[0].startsWith('data:image/')) { %>
                                                         <td><img width="50px" height="50px"
-                                                                src="<%= product.variants[0].images[0] %>" alt=""></td>
+                                                                src="<%= product.variants[0].images[0] %>" alt="">
+                                                        </td>
                                                         <% } else { %>
                                                             <td><img width="50px" height="50px"
                                                                     src="/images/productImages/<%= product.variants[0].images[0] %>"

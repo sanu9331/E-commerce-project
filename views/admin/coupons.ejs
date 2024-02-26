@@ -60,7 +60,7 @@
                                             <div class="form-group">
                                                 <label for="number">percentage</label>
                                                 <input type="number" class="form-control" id="discountPercentage"
-                                                    name="discountPercentage" required>
+                                                    name="discountPercentage" min="0" max="100" required>
                                             </div>
                                             <div class="form-group">
                                                 <label for="expiryDate">Expiry Date</label>
@@ -110,6 +110,9 @@
                                                                 style="color: <%= coupon.isActive ? 'green' : 'red' %>;">
                                                                 <%= coupon.isActive ? 'Active' : 'Expired' %>
                                                             </span>
+                                                            <a href="/admin/coupons-delete/<%= coupon._id %>"
+                                                                class="btn btn-danger btn-sm float-end">delete</a>
+
                                             </li>
                                             <% }) %>
                                     </ul>
@@ -118,6 +121,10 @@
 
                         </div>
                     </div>
+
+
+
+
     </main>
 
     <script>

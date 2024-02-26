@@ -185,6 +185,23 @@
             <section style="background-color: #b3bbc0; width: 80%;  margin: 0 auto; padding: 10px; border-radius: 7px;">
                 <div class="container table-responsive">
 
+                    <div class="input-group mb-2" style="width: 14rem; margin-inline-start: auto;">
+                        <form id="searchForm" method="GET" action="/admin/orders?userID=<%= userID %>">
+                            <div class="input-group mb-2" style="min-width:5rem;margin-left: 5px; margin-right: 5px;">
+                                <input type="search" name="search" class="form-control rounded" placeholder="Search"
+                                    aria-label="Search" aria-describedby="search-addon" />
+                                <button type="submit" class="btn btn-success" data-mdb-ripple-init>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem"
+                                        fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path
+                                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+
+                    </div>
+
                     <table class="table table-centered mb-0 table-nowrap" style="background-color: white;">
                         <thead class="text-center table-dark">
                             <tr>

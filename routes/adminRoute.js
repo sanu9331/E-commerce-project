@@ -111,7 +111,9 @@ admin_route.get("/products/delete/:id", adminAuth.isLogin, productController.del
 //ADMIN PRODUCT EDIT ROUTE
 admin_route.get("/products/edit/:id", adminAuth.isLogin, productController.editProductLoad);
 admin_route.post("/products/edit/:id", uploadProductImage.array('images', 4), productController.editProduct);
-admin_route.get('/products/delete-variant', adminAuth.isLogin, productController.deleteProductVarientByAdmin)
+admin_route.get('/products/delete-variant', adminAuth.isLogin, productController.deleteProductVarientByAdmin);
+
+
 
 //edit product varients
 //admin_route.get('/products / delete -variant / ', adminAuth.isLogin, productController.deleteProductVarientByAdmin)
@@ -135,6 +137,7 @@ admin_route.get('/orderHistory', adminController.orderHistorLoad);
 admin_route.get('/coupons', couponController.loadCoupons);
 admin_route.post('/coupons/add', couponController.addCoupon);
 admin_route.post('/coupons-apply', couponController.applyCoupon);
+admin_route.get('/coupons-delete/:couponId', couponController.couponDelete);
 
 //order detail page
 admin_route.get('/adminOrderDetailPage', orderController.loadAdminOrderDetailPage);

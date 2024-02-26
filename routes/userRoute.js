@@ -172,4 +172,6 @@ user_route.get('/orderDetailPage', auth.userBlocked, auth.isLogin, orderControll
 //clear couponDiscountPrice
 user_route.get('/clear-couponDiscountPrice', orderController.clearCouponDiscountPrice);
 
+
+
 module.exports = user_route;

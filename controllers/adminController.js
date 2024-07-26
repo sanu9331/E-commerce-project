@@ -745,11 +745,11 @@ const exportOrders = async (req, res) => {
     }
 }
 
+
 //export order PDF
 const exportOrdersToPDF = async (req, res) => {
     try {
         const orders = await Order.find({});
-
         // Create a new PDF document
         const pdfDoc = new PDFDocument();
         const filename = 'order_report.pdf';
@@ -774,10 +774,8 @@ const exportOrdersToPDF = async (req, res) => {
             pdfDoc.text(`TotalAmount: ${order.totalAmount}`);
             pdfDoc.moveDown();
         });
-
         // Finalize the PDF document
         pdfDoc.end();
-
     } catch (error) {
         console.error('Error exporting to PDF:', error);
         res.status(500).send('Internal Server Error');

@@ -1,8 +1,8 @@
 require('dotenv').config(); // Load environment variables at the start
 
 const mongoose = require("mongoose");
-// Changed MongoDB connection to use environment variable
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+// Removed deprecated options
+mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log("MongoDB connected"))
     .catch(err => console.log(err));
 
@@ -14,7 +14,7 @@ const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const nocache = require("nocache");
 
-//app.use(express.json());
+// Middleware for JSON and URL-encoded data
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb' }));
 
@@ -26,9 +26,9 @@ const adminSession = session({
     cookie: { maxAge: 6000000 }
 });
 
-// Updated MongoDBStore to use environment variable
+// MongoDBStore configuration
 const userStore = new MongoDBStore({
-    uri: process.env.MONGODB_URI, // Changed to use environment variable
+    uri: process.env.MONGODB_URI, // Use environment variable
     collection: "user_sessions",
 });
 
@@ -43,7 +43,7 @@ const userSession = session({
 
 app.use(nocache());
 
-const flash = require('express-flash')
+const flash = require('express-flash');
 app.use(flash());
 
 // Serve static files from the 'public' directory
@@ -61,4 +61,3 @@ app.use('/admin', adminSession, adminRoute);
 app.listen(port, function () {
     console.log(`Server is running on port ${port}`);
 });
-

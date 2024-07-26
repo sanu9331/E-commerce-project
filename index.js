@@ -20,7 +20,7 @@ app.use(express.urlencoded({ limit: '50mb' }));
 
 // Admin session configuration
 const adminSession = session({
-    secret: "admin-secret",
+    secret: process.env.SESSION_SECRET_ADMIN, // Use environment variable for admin secret
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 6000000 }
@@ -34,7 +34,7 @@ const userStore = new MongoDBStore({
 
 // User session configuration
 const userSession = session({
-    secret: "user-secret",
+    secret: process.env.SESSION_SECRET_USER, // Use environment variable for user secret
     resave: false,
     saveUninitialized: true,
     store: userStore,
@@ -61,3 +61,4 @@ app.use('/admin', adminSession, adminRoute);
 app.listen(port, function () {
     console.log(`Server is running on port ${port}`);
 });
+

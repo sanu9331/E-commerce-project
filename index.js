@@ -28,7 +28,7 @@ const adminSession = session({
 
 // MongoDBStore configuration
 const userStore = new MongoDBStore({
-    uri: process.env.MONGODB_URI, // Use environment variable
+    uri: process.env.SESSION_MONGODB_URI, // Use environment variable
     collection: "user_sessions",
 });
 

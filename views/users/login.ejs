@@ -14,8 +14,7 @@
             padding: 0;
             color: black;
             background-color: white;
-            overflow: hidden;
-
+            overflow: auto;
         }
 
         .navbar {
@@ -80,15 +79,12 @@
         input[type="password"],
         select {
             width: calc(100% - 20px);
-            /* Adjust the width and subtract the padding */
             padding: 8px;
             margin-bottom: 15px;
             border: none;
             border-bottom: 1px solid #ccc;
-            /* Add bottom border */
             box-sizing: border-box;
             outline: none;
-            /* Remove default outline */
         }
 
         .navbar-left a {
@@ -101,34 +97,26 @@
             justify-content: space-around;
             align-items: flex-start;
             margin: 50px auto;
-            /* Adjust the margin value */
         }
 
         .sample-image,
         .form-container {
             width: 48%;
-            /* Adjust the width as needed */
             box-sizing: border-box;
         }
 
         .sample-image {
             max-width: 100%;
-            /* Ensure the image doesn't exceed its container */
         }
 
         .form-container {
             margin-left: 6%;
             margin-right: 20%;
             padding: 20px;
-
-
-
-
-            /* Center the content within the form */
         }
 
         .form-container h2 {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .form-container label {
@@ -138,15 +126,12 @@
 
         .form-container input {
             width: calc(100% - 20px);
-            /* Adjust the width and subtract the padding */
             padding: 8px;
             margin-bottom: 15px;
             border: none;
             border-bottom: 1px solid #ccc;
-            /* Add bottom border */
             box-sizing: border-box;
             outline: none;
-            /* Remove default outline */
         }
 
         .form-container button {
@@ -157,9 +142,7 @@
             border-radius: 5px;
             cursor: pointer;
             margin: 0 auto;
-            /* Center the button within the form */
             display: block;
-            /* Make the button a block element */
             width: 100%;
         }
 
@@ -168,7 +151,6 @@
             text-align: center;
             margin-top: 10px;
             color: #333;
-
         }
 
         .footer {
@@ -183,9 +165,7 @@
             font-size: 20px;
             font-weight: bold;
             color: #333;
-            /* Set your desired color */
             text-decoration: none;
-            /* Remove underline */
         }
 
         a.Signup-link {
@@ -195,6 +175,70 @@
 
         a.Signup-link:hover {
             color: rgb(0, 136, 255);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .navbar-container {
+                width: 90%;
+            }
+
+            .navbar-left a {
+                font-size: 16px;
+            }
+
+            .content-container {
+                flex-direction: column;
+                align-items: center;
+                margin: 20px auto;
+            }
+
+            .sample-image,
+            .form-container {
+                width: 90%;
+                margin-bottom: 20px;
+            }
+
+            .form-container {
+                padding: 10px;
+                margin-left: 20px;
+                margin-right: 20px;
+            }
+
+            .form-container h2 {
+                margin-bottom: 15px;
+            }
+
+            .form-container label {
+                margin-bottom: 5px;
+            }
+
+            .form-container input {
+                margin-bottom: 10px;
+            }
+
+            .form-container button {
+                padding: 8px 12px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .content-container {
+                flex-direction: row;
+                align-items: flex-start;
+                margin: 50px auto;
+            }
+
+            .sample-image,
+            .form-container {
+                width: 48%;
+            }
+
+            .form-container {
+                margin-left: 6%;
+                margin-right: 20%;
+                padding: 20px;
+            }
         }
     </style>
     <link
@@ -233,9 +277,7 @@
 
         <div class="form-container">
             <h2>Login to Shopsphere</h2>
-            <form id="form" action=" /login" method="post">
-
-
+            <form id="form" action="/login" method="post">
 
                 <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
@@ -257,8 +299,6 @@
     <div class="footer">
         &copy; 2023 Shopsphere. All rights reserved.
     </div>
-
-
 
 </body>
 

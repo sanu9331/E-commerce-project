@@ -193,6 +193,71 @@
         a.login-link:hover {
             color: rgb(0, 136, 255);
         }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .navbar-container {
+                width: 90%;
+            }
+
+            .navbar-left a {
+                font-size: 16px;
+            }
+
+            .content-container {
+                flex-direction: column;
+                align-items: center;
+                margin: 20px auto;
+            }
+
+            .sample-image,
+            .form-container {
+                width: 90%;
+                height: auto;
+                margin: 20px 0;
+                margin-left: 0;
+            }
+
+            .form-container {
+                padding: 10px;
+                margin: 0;
+            }
+
+            .form-container h2 {
+                margin-bottom: 10px;
+            }
+
+            .form-container label {
+                margin-bottom: 5px;
+            }
+
+            .form-container input {
+                margin-bottom: 10px;
+            }
+
+            .form-container button {
+                padding: 8px 12px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .content-container {
+                flex-direction: row;
+                align-items: flex-start;
+                margin: 50px auto;
+            }
+
+            .sample-image,
+            .form-container {
+                width: 48%;
+            }
+
+            .form-container {
+                margin-left: 6%;
+                margin-right: 20%;
+                padding: 20px;
+            }
+        }
     </style>
     <link
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Mukta:wght@800&family=Noto+Sans&family=Nunito:ital,wght@0,300;0,600;1,200&family=Ruwudu&display=swap"

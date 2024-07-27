@@ -93,11 +93,44 @@ const verifyLogin = async (req, res) => {
 //         console.log(error.message);
 //     }
 // }
+
+async function getOrderCountByMonth() {
+    try {
+        const ordersByMonth = await Order.aggregate([
+            {
+                $group: {
+                    _id: { $month: '$orderDate' }, // Grouping by month
+                    totalOrders: { $sum: 1 } // Counting total orders in each group
+                }
+            },
+            {
+                $project: {
+                    _id: 0, // Exclude _id field
+                    month: '$_id', // Rename _id to month
+                    totalOrders: 1 // Include totalOrders field
+                }
+            }
+        ]);
+
+        const orderCountsArray = new Array(12).fill(0);
+        ordersByMonth.forEach((item) => {
+            orderCountsArray[item.month - 1] = item.totalOrders;
+        });
+
+        return orderCountsArray;
+    } catch (error) {
+        console.error('Error retrieving order count by month:', error);
+        throw error;
+    }
+}
+
 const loadDashboard = async (req, res) => {
     try {
         const totalOrders = await Order.countDocuments({});
         const totalUsers = await User.countDocuments({});
         const userData = await User.findById(req.session.admin_id);
+
+        const orderCounts = await getOrderCountByMonth();
 
         const currentDate = new Date();
 
@@ -129,7 +162,7 @@ const loadDashboard = async (req, res) => {
             totalUsers,
             dailySalesData,
             weeklySalesData,
-            yearlySalesData
+            yearlySalesData, orderCounts
         });
     } catch (error) {
         console.log(error.message);

@@ -26,18 +26,15 @@
 
         <div class="container mt-4">
 
-            <div class="row d-inline-flex align-items-center justify-content-center  ">
-                <div class=" col-md-10 col-lg-10 ">
-
+            <div class="row d-flex align-items-center justify-content-center">
+                <div class="col-md-10 col-lg-10">
 
                     <div class="d-flex justify-content-between">
-                        <h1 class="text-bg-info  rounded"
-                            style="font-size: 30px; width: 230px; text-align: center;  font-family:Arial, Helvetica, sans-serif;">
+                        <h1 class="text-bg-info rounded text-center" style="font-size: 30px; min-width: 5rem;">
                             Category List</h1>
 
-
-                        <form id="searchForm" method="GET" action="/admin/Category">
-                            <div class="input-group" style="width: 14rem; margin-left: 23rem;">
+                        <form id="searchForm" method="GET" action="/admin/Category" class="ms-auto">
+                            <div class="input-group" style="min-width: 2rem;">
                                 <input type="search" name="search" class="form-control rounded" placeholder="Search"
                                     aria-label="Search" aria-describedby="search-addon" />
                                 <button type="submit" class="btn btn-success" data-mdb-ripple-init>
@@ -56,57 +53,38 @@
 
                     </div>
 
-
-
                     <% if (CategoryData.length===0) { %>
                         <div class="alert alert-warning" role="alert">
                             No products found
                         </div>
                         <% } else { %>
-                            <!-- <div class="overflow-auto p-3 bg-light" style="max-width: 1500px; max-height: 600px;"> -->
-                            <table class="table">
-                                <thead class="text-center table-dark">
-                                    <tr>
-                                        <th>Category</th>
-                                        <th>Sub Category</th>
-                                        <th>Description</th>
-                                        <th>Actions</th>
-                                        <th>image</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="align-center">
-                                    <% CategoryData.forEach(function(category) { %>
-                                        <tr class="text-center">
-                                            <td>
-                                                <%= category.category %>
-                                            </td>
-                                            <td class="description-column">
-                                                <%= category.sub_Category %>
-                                            </td>
-                                            <td class="description-column">
-                                                <%= category.description %>
-                                            </td>
-                                            <td class="description-column">
-                                                <img width="50px" height="50px"
-                                                    src="/images/categoryImages/<%= category.image %>" alt="">
-                                            </td>
-
-                                            <td>
+                            <div class="row">
+                                <% CategoryData.forEach(function(category) { %>
+                                    <div class="col-md-4 mb-4">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <%= category.category %>
+                                                </h5>
+                                                <p class="card-text">
+                                                    <%= category.sub_Category %>
+                                                </p>
+                                                <p class="card-text">
+                                                    <%= category.description %>
+                                                </p>
+                                                <img src="/images/categoryImages/<%= category.image %>"
+                                                    alt="category image" class="card-img-top" width="100" height="200">
                                                 <a href="/admin/category/edit/<%= category._id %>"
                                                     class="btn btn-warning">Edit</a>
                                                 <a href="javascript:void(0);"
                                                     onclick="confirmDelete('<%= category._id %>','/admin/category/delete/','You will not be able to recover this category!')"
                                                     class="btn btn-danger">Delete</a>
-                                            </td>
-
-                                        </tr>
-                                        <% }); %>
-                                </tbody>
-                            </table>
-
-
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                            </div>
                             <% } %>
-                                <!-- </div> -->
                 </div>
             </div>
         </div>
@@ -126,18 +104,6 @@
                 <div class="modal-body">
                     <form method="POST" action="/admin/category/add" onsubmit="return validateCategoryForm()"
                         enctype="multipart/form-data">
-                        <!-- <div class=" form-group">
-                                <label for="name">Category Name</label>
-                                <select class="select form-control" id="name" name="name" required>
-                                    <option value="">Select</option>
-                                    <option value="Laptops">Laptops</option>
-                                    <option value="Mobiles">Mobiles</option>
-                                    <option value="Headphones">Headphones</option>
-                                    <option value="SmartWatches">SmartWatches</option>
-                                    <option value="Cameras">Cameras</option>
-                            </select>
-                            <div id="nameWarning" class="text-danger"></div>
-                    </div> -->
                         <div class="form-group">
                             <label for="name">Category name</label>
                             <input type="text" class="form-control" id="name" name="name" required>
@@ -147,24 +113,7 @@
                             <label for="name">Sub-Category name</label>
                             <input type="text" class="form-control" id="SubCategory" name="SubCategory" required>
                         </div>
-                        <!-- <div class="form-group">
-                                <label for="SubCategory">Sub-Category Name</label>
-                                <select class="select form-control" id="SubCategory" name="SubCategory" required>
-                                    <option value="">Select</option>
-                                    <option value="Gaming">Gaming</option>
-                                    <option value="Ultrabooks">Ultrabooks</option>
-                                    <option value="Fitness Trackers">Fitness Trackers </option>
-                                    <option value="Fashionable Smartwatches">Fashionable Smartwatches</option>
-                                    <option value="Flagship Phones">Flagship Phones</option>
-                                    <option value="Budget-friendly Phones">Budget-friendly Phones</option>
-                                    <option value="Over-Ear Headphones ">Over-Ear Headphones </option>
-                                    <option value="True Wireless Earbuds">True Wireless Earbuds</option>
-                                    <option value="DSLR Cameras">DSLR Cameras</option>
 
-
-                                </select>
-                                <div id="SubCategoryWarning" class="text-danger"></div>
-                            </div> -->
                         <div class="form-group">
                             <label for="image">Image</label>
                             <input type="file" class="form-control" id="image" name="image">
@@ -181,7 +130,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- Pagination Section -->
     <nav aria-label="Page navigation">
@@ -221,17 +169,13 @@
                                                         <% if (currentPage < totalPages) { %>
                                                             <li class="page-item">
                                                                 <a class="page-link"
-                                                                    href="/admin/Category?page=<%= currentPage + 1 %>"
-                                                                    aria-label="Next">
+                                                                    href="/admin/Category?page=<%= currentPage + 1 %>">
                                                                     <span aria-hidden="true">&raquo;</span>
                                                                 </a>
                                                             </li>
                                                             <% } %>
         </ul>
     </nav>
-
-
-
 
     <script>
         function validateCategoryForm() {
@@ -276,8 +220,6 @@
             }
         }
     </script>
-
-
 
     <footer style="margin-top: 6rem;">
         <!-- place footer here -->

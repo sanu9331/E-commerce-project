@@ -32,6 +32,29 @@
         .table td {
             white-space: nowrap;
         }
+
+        /* Adjustments for small screens */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .btn {
+                font-size: 0.8rem;
+                padding: 0.25rem 0.5rem;
+            }
+
+            .form-control {
+                font-size: 0.8rem;
+                padding: 0.25rem 0.5rem;
+
+            }
+
+            .table th,
+            .table td {
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
 
@@ -44,12 +67,12 @@
         <div class="container-fluid mt-4">
             <div class="row justify-content-center">
                 <div class="col-md-10">
+                    <h1 class="text-bg-info rounded text-center" style="font-size: 2rem; min-width: 5rem;">
+                        Customer List
+                    </h1>
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                        <h1 class="text-bg-info rounded text-center" style="font-size: 2rem; min-width: 5rem;">
-                            Customer List
-                        </h1>
-                        <form id="searchForm" method="GET" action="/admin/customers">
-                            <div class="input-group" style="min-width: 2rem; margin-left: 1rem;">
+                        <form id="searchForm" method="GET" action="/admin/customers" class="ms-auto">
+                            <div class="input-group" style="min-width: 1rem;">
                                 <input type="search" name="search" class="form-control rounded" placeholder="Search"
                                     aria-label="Search" aria-describedby="search-addon" />
                                 <button type="submit" class="btn btn-success" data-mdb-ripple-init>

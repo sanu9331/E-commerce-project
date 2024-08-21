@@ -26,6 +26,42 @@
             font-size: 14px;
             /* Adjust the font size as needed */
         }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .table {
+                font-size: 12px;
+            }
+
+            .btn {
+                padding: 0.5rem 0rem;
+                font-size: 0.875rem;
+            }
+
+            /* Adjust table cell padding */
+            .table thead th,
+            .table tbody td {
+                padding: 0.5rem;
+            }
+
+            /* Adjust modal content */
+            .modal-content {
+                max-width: 90%;
+                margin: 0 auto;
+            }
+
+            /* Adjust modal body text */
+            .modal-body {
+                font-size: 14px;
+            }
+        }
+
+        /* Enable scrolling for the table */
+        .scrollable-table {
+            max-height: 300px;
+            /* Adjust this value as needed */
+            overflow-y: auto;
+        }
     </style>
 </head>
 
@@ -53,204 +89,167 @@
 
                     <div>
                         <p
-                            style="font-size: 2rem;  font-family: 'Poppins', sans-serif; margin-left: 16rem;margin-top: 4rem;">
+                            style="font-size: 2rem; font-family: 'Poppins', sans-serif; margin-top: 4rem; margin-left: 3rem;">
                             orders
                         </p>
                     </div>
                     <section
-                        style="background-color: #eee; width: 100%; padding: 10px; border-radius: 7px; margin-bottom: 8rem; margin-top:1rem ;">
+                        style="background-color: #eee; width: 100%;  border-radius: 7px; margin-bottom: 8rem; margin-top: 1rem;">
                         <div class="container">
                             <section
-                                style="background-color: #b3bbc0; width: 80%; margin: 0 auto; padding: 10px; border-radius: 7px;">
+                                style="background-color: #b3bbc0; width: 100%; margin: 0 auto; padding: 10px; border-radius: 7px;">
                                 <div class="container">
-                                    <table class="table table-centered mb-0 table-nowrap"
-                                        style="background-color: white;">
-                                        <thead class="text-center table-dark">
-                                            <tr>
-                                                <th class="border-top-0" scope="col">Customer</th>
-                                                <th class="border-top-0" scope="col">Order Date</th>
-                                                <th class="border-top-0" scope="col">Status</th>
-                                                <th class="border-top-0" scope="col">Address</th>
-                                                <th class="border-top-0" scope="col">Payment Method</th>
-                                                <th class="border-top-0" scope="col">Total Amount</th>
-                                                <!-- <th class="border-top-0" scope="col">payment</th> -->
-                                                <th class="border-top-0" colspan="3"></th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            <% orders.forEach((order, orderIndex)=> { %>
+                                    <div class="scrollable-table">
+                                        <table class="table table-centered mb-0 table-nowrap"
+                                            style="background-color: white;">
+                                            <thead class="text-center table-dark">
                                                 <tr>
-                                                    <td>
-                                                        <% if (order.customer && order.customer.name) { %>
-                                                            ⭐<%= order.customer.name %>
-                                                                <% } else { %>
-                                                                    No Name
-                                                                    <% } %>
-                                                    </td>
-                                                    <td>
-                                                        <!-- <%= order.orderDate.toDateString() %> -->
-                                                        <%= new Date(order.orderDate).toLocaleString([], {
-                                                            dateStyle: 'medium' , timeStyle: 'short' }) %>
+                                                    <th class="border-top-0" scope="col">Customer</th>
+                                                    <th class="border-top-0" scope="col">Order Date</th>
+                                                    <th class="border-top-0" scope="col">Status</th>
+                                                    <th class="border-top-0" scope="col">Address</th>
+                                                    <th class="border-top-0" scope="col">Payment Method</th>
+                                                    <th class="border-top-0" scope="col">Total Amount</th>
+                                                    <!-- <th class="border-top-0" scope="col">payment</th> -->
+                                                    <th class="border-top-0" colspan="3"></th>
+                                                </tr>
+                                            </thead>
 
-
-
-                                                    </td>
-                                                    <td>
-                                                        <% if (order.status==='Cancelled' ) { %>
-                                                            <span class="text-danger">
-                                                                <%= order.status %>
-                                                            </span>
-                                                            <% } else if (order.status==='delivered' ) { %>
-                                                                <span class="text-success">
+                                            <tbody>
+                                                <% orders.forEach((order, orderIndex)=> { %>
+                                                    <tr>
+                                                        <td>
+                                                            <% if (order.customer && order.customer.name) { %>
+                                                                ⭐<%= order.customer.name %>
+                                                                    <% } else { %>
+                                                                        No Name
+                                                                        <% } %>
+                                                        </td>
+                                                        <td>
+                                                            <!-- <%= order.orderDate.toDateString() %> -->
+                                                            <%= new Date(order.orderDate).toLocaleString([], {
+                                                                dateStyle: 'medium' , timeStyle: 'short' }) %>
+                                                        </td>
+                                                        <td>
+                                                            <% if (order.status==='Cancelled' ) { %>
+                                                                <span class="text-danger">
                                                                     <%= order.status %>
                                                                 </span>
-                                                                <% } else if (order.status==='pending' ) { %>
-                                                                    <span class="text-info">
+                                                                <% } else if (order.status==='delivered' ) { %>
+                                                                    <span class="text-success">
                                                                         <%= order.status %>
                                                                     </span>
-                                                                    <% } else if (order.status==='processing' ) { %>
+                                                                    <% } else if (order.status==='pending' ) { %>
                                                                         <span class="text-info">
                                                                             <%= order.status %>
                                                                         </span>
-                                                                        <% } else if (order.status==='shipped' ) { %>
+                                                                        <% } else if (order.status==='processing' ) { %>
                                                                             <span class="text-info">
                                                                                 <%= order.status %>
                                                                             </span>
-                                                                            <% } else if (order.status==='returned' ) {
+                                                                            <% } else if (order.status==='shipped' ) {
                                                                                 %>
-                                                                                <span style="color: #ff69b4;">
+                                                                                <span class="text-info">
                                                                                     <%= order.status %>
                                                                                 </span>
-                                                                                <% } else if
-                                                                                    (order.status==='returnApproved' ) {
-                                                                                    %>
+                                                                                <% } else if (order.status==='returned'
+                                                                                    ) { %>
                                                                                     <span style="color: #ff69b4;">
                                                                                         <%= order.status %>
                                                                                     </span>
                                                                                     <% } else if
-                                                                                        (order.status==='returnRejected'
+                                                                                        (order.status==='returnApproved'
                                                                                         ) { %>
-                                                                                        <span style="color: red;">
+                                                                                        <span style="color: #ff69b4;">
                                                                                             <%= order.status %>
                                                                                         </span>
-                                                                                        <% } %>
-
-                                                    </td>
-
-                                                    <td>
-                                                        <!-- <%= order.orderAddress %> -->
-                                                        <% const orderAddressString=order.orderAddress; %>
-                                                            <% if (orderAddressString) { %>
-                                                                <% const matches=orderAddressString.match(/'([^']+)'/g);
-                                                                    %>
-                                                                    <% if (matches) { %>
-                                                                        <% const addressComponents=matches.map(match=>
-                                                                            match.replace(/'/g, '').trim()); %>
+                                                                                        <% } else if
+                                                                                            (order.status==='returnRejected'
+                                                                                            ) { %>
+                                                                                            <span style="color: red;">
+                                                                                                <%= order.status %>
+                                                                                            </span>
+                                                                                            <% } %>
+                                                        </td>
+                                                        <td>
+                                                            <% const orderAddressString=order.orderAddress; %>
+                                                                <% if (orderAddressString) { %>
+                                                                    <% const
+                                                                        matches=orderAddressString.match(/'([^']+)'/g);
+                                                                        %>
+                                                                        <% if (matches) { %>
                                                                             <% const
-                                                                                filteredComponents=addressComponents.slice(0,
-                                                                                -1); %>
+                                                                                addressComponents=matches.map(match=>
+                                                                                match.replace(/'/g, '').trim()); %>
                                                                                 <% const
-                                                                                    addressWithoutId=filteredComponents.join(', '); %>
-                                                                <p><%= addressWithoutId %></p>
+                                                                                    filteredComponents=addressComponents.slice(0,
+                                                                                    -1); %>
+                                                                                    <% const
+                                                                                        addressWithoutId=filteredComponents.join(', '); %>
+                                                            <p><%= addressWithoutId %></p>
                                                             <% } else { %>
                                                                 <p>No address available</p>
-                                                            <% } %>
-                                                        <% } else { %>
-                                                            <p>No address available</p>
-                                                        <% } %>
-                                                        
-                                                        
-
-
-
-
-
-
-                                                    </td>
-
-                                                    <td>
-                                                        <%= order.paymentMethod %>
-                                                    </td>
-                                                    <td>
-                                                        <% if (order.couponDiscountPrice !== null) { %>
-                                                            $ <%= order.couponDiscountPrice %>
-                                                        <% } else { %>
-                                                            <!-- $ <%= (order.totalAmount / 100).toFixed(2) %> -->
-                                                            $<%= order.totalAmount  %>
-                                                        <% } %>
-                                                    </td>
-                                                    
-                                                    <!-- <td>
-                                                        payment
-                                                    </td> -->
-                                                    <td colspan=" 3">
-                                                    </td>
-
-                                                    <!-- <% const orderProducts=order.items.map(item=> ({
-                                            name: item.product.name,
-                                            quantity: item.quantity,
-                                            price: item.price,
-                                            image: item.product.variants[0].images[0],
-                                            productId: item.product._id
-                                            })); %> -->
-
-                                                    <td colspan="6"></td>
-                                                    <td>
-                                                        <!-- <a href="#" class="btn btn-primary view-products-btn"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#mailModal2_<%= orderIndex %>">
+                                                                <% } %>
+                                                                <% } else { %>
+                                                                    <p>No address available</p>
+                                                                    <% } %>
+                                                        </td>
+                                                        <td>
+                                                            <%= order.paymentMethod %>
+                                                        </td>
+                                                        <td>
+                                                            <% if (order.couponDiscountPrice !== null) { %>
+                                                                $ <%= order.couponDiscountPrice %>
+                                                                <% } else { %>
+                                                                    <!-- $ <%= (order.totalAmount / 100).toFixed(2) %> -->
+                                                                    $<%= order.totalAmount %>
+                                                                    <% } %>
+                                                        </td>
+                                                        <td colspan="3"></td>
+                                                        <td colspan="6"></td>
+                                                        <td>
+                                                            <!-- <a href="#" class="btn btn-primary view-products-btn" data-bs-toggle="modal" data-bs-target="#mailModal2_<%= orderIndex %>">
                                                             View Products
                                                         </a> -->
-                                                        <!-- <a href="/orderDetailPage?orderIndex=<%= orderIndex %>">View
-                                                            Products</a> -->
-                                                        <a href="/orderDetailPage?orderId=<%= order._id %>">View
-                                                            Products</a>
-
-                                                    </td>
-
-                                                    <td>
-                                                        <% if (order.status===' Cancelled' ) { %>
-                                                                                    <span class="text-danger">
-                                                                                        Cancelled
-                                                                                    </span>
-                                                                                    <% } else if
-                                                                                        (order.status==='delivered' ) {
-                                                                                        %>
-                                                                                        <!-- <span class="text-success">
+                                                            <!-- <a href="/orderDetailPage?orderIndex=<%= orderIndex %>">View Products</a> -->
+                                                            <a href="/orderDetailPage?orderId=<%= order._id %>">View Products</a>
+                                                        </td>
+                                                        <td>
+                                                            <% if (order.status === ' Cancelled') { %>
+                                                                                        <span class="text-danger">
+                                                                                            Cancelled
+                                                                                        </span>
+                                                                                        <% } else if
+                                                                                            (order.status==='delivered'
+                                                                                            ) { %>
+                                                                                            <!-- <span class="text-success">
                                                         completed
                                                     </span> -->
-                                                                                        <% const currentDate=new Date();
-                                                                                            %>
-                                                                                            <% const
-                                                                                                daysDifference=Math.floor((currentDate
-                                                                                                - order.orderDate) /
-                                                                                                (1000 * 60 * 60 * 24));
-                                                                                                %>
-                                                                                                <% if (daysDifference
-                                                                                                    <=7) { %>
-                                                                                                    <a href="/returnOrders/<%= order._id %>"
-                                                                                                        class="btn btn-sm btn-primary">Return
-                                                                                                        Order</a>
-                                                                                                    <% } %>
-                                                                                                        <% } else if
-                                                                                                            (order.status==='returned'
-                                                                                                            ) { %>
-                                                                                                            <span
-                                                                                                                class="text-info">
-                                                                                                                <!-- <%= order.status %> -->return
-                                                                                                                processing
-                                                                                                            </span>
+                                                                                            <% const currentDate=new
+                                                                                                Date(); %>
+                                                                                                <% const
+                                                                                                    daysDifference=Math.floor((currentDate
+                                                                                                    - order.orderDate) /
+                                                                                                    (1000 * 60 * 60 *
+                                                                                                    24)); %>
+                                                                                                    <% if
+                                                                                                        (daysDifference
+                                                                                                        <=7) { %>
+                                                                                                        <a href="/returnOrders/<%= order._id %>"
+                                                                                                            class="btn btn-sm btn-primary">Return
+                                                                                                            Order</a>
+                                                                                                        <% } %>
                                                                                                             <% } else if
-                                                                                                                (order.status==='processing'
+                                                                                                                (order.status==='returned'
                                                                                                                 ) { %>
-                                                                                                                <a href="#"
-                                                                                                                    class="btn btn-sm btn-primary"
-                                                                                                                    data-bs-toggle="modal"
-                                                                                                                    data-bs-target="#exampleModal_<%= orderIndex %>">cancel</a>
+                                                                                                                <span
+                                                                                                                    class="text-info">
+                                                                                                                    <!-- <%= order.status %> -->return
+                                                                                                                    processing
+                                                                                                                </span>
                                                                                                                 <% } else
                                                                                                                     if
-                                                                                                                    (order.status==='shipped'
+                                                                                                                    (order.status==='processing'
                                                                                                                     ) {
                                                                                                                     %>
                                                                                                                     <a href="#"
@@ -259,7 +258,7 @@
                                                                                                                         data-bs-target="#exampleModal_<%= orderIndex %>">cancel</a>
                                                                                                                     <% } else
                                                                                                                         if
-                                                                                                                        (order.status==='pending'
+                                                                                                                        (order.status==='shipped'
                                                                                                                         )
                                                                                                                         {
                                                                                                                         %>
@@ -269,35 +268,44 @@
                                                                                                                             data-bs-target="#exampleModal_<%= orderIndex %>">cancel</a>
                                                                                                                         <% } else
                                                                                                                             if
-                                                                                                                            (order.status==='returnApproved'
+                                                                                                                            (order.status==='pending'
                                                                                                                             )
                                                                                                                             {
                                                                                                                             %>
-                                                                                                                            <span
-                                                                                                                                style="color: #ff69b4;">
-                                                                                                                                return
-                                                                                                                                approved
-                                                                                                                            </span>
+                                                                                                                            <a href="#"
+                                                                                                                                class="btn btn-sm btn-primary"
+                                                                                                                                data-bs-toggle="modal"
+                                                                                                                                data-bs-target="#exampleModal_<%= orderIndex %>">cancel</a>
                                                                                                                             <% } else
                                                                                                                                 if
-                                                                                                                                (order.status==='returnRejected'
+                                                                                                                                (order.status==='returnApproved'
                                                                                                                                 )
                                                                                                                                 {
                                                                                                                                 %>
                                                                                                                                 <span
-                                                                                                                                    style="color: red;">
+                                                                                                                                    style="color: #ff69b4;">
                                                                                                                                     return
-                                                                                                                                    rejected
+                                                                                                                                    approved
                                                                                                                                 </span>
-                                                                                                                                <% }
+                                                                                                                                <% } else
+                                                                                                                                    if
+                                                                                                                                    (order.status==='returnRejected'
+                                                                                                                                    )
+                                                                                                                                    {
                                                                                                                                     %>
-
-
-                                                    </td>
-                                                </tr>
-                                                <% }); %>
-                                        </tbody>
-                                    </table>
+                                                                                                                                    <span
+                                                                                                                                        style="color: red;">
+                                                                                                                                        return
+                                                                                                                                        rejected
+                                                                                                                                    </span>
+                                                                                                                                    <% }
+                                                                                                                                        %>
+                                                        </td>
+                                                    </tr>
+                                                    <% }); %>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </section>
                         </div>
@@ -374,7 +382,6 @@
                                                     data-bs-dismiss="modal">Close</button>
                                                 <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
                                                 <a href="/cancel/<%= order._id %>" class="btn btn-primary">ok</a>
-
                                             </div>
                                         </div>
                                     </div>
@@ -382,8 +389,6 @@
                                 <% }); %>
 
     </main>
-
-
 
     <!-- Pagination Section -->
     <nav aria-label="Page navigation">
@@ -432,7 +437,6 @@
         </ul>
     </nav>
 
-
     <script>
         function closeFlashMessage() {
             const flashMessage = document.querySelector('.alert.alert-danger, .alert.alert-success');
@@ -454,7 +458,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
-
 
 </body>
 

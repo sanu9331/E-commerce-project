@@ -1,55 +1,19 @@
-// const mongoose = require("mongoose");
-// mongoose.connect("mongodb://127.0.0.1:27017/user_management_system");
-
-// const express = require("express");
-// const app = express();
-
-// //changes sanu
-// const session = require("express-session");
-// const nocache = require("nocache");
-// app.use(nocache());
-// app.use(
-//     session({
-//         secret: "session key",
-//         resave: false,
-//         saveUninitialized: true,
-//         cookie: { maxAge: 6000000 }
-//     })
-// );
-
-// // Serve static files from the 'public' directory
-// const path = require('path');
-// app.use('/images', express.static(path.join(__dirname, 'public/images')));
-
-// //for user routes
-// const userRoute = require('./routes/userRoute');
-// app.use('/', userRoute);
-
-// //for admin routes
-// const adminRoute = require('./routes/adminRoute');
-// app.use('/admin', adminRoute);
-
-
-
-
-// app.listen(3000, function () {
-//     console.log('server is running on port 3000');
-// })
-
-
+require('dotenv').config(); // Load environment variables at the start
 
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://127.0.0.1:27017/user_management_system");
+// Changed MongoDB connection to use environment variable
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log("MongoDB connected"))
+    .catch(err => console.log(err));
 
 const express = require("express");
 const app = express();
-
-require('dotenv').config();
 
 const port = process.env.PORT || 3000;
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const nocache = require("nocache");
+
 //app.use(express.json());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb' }));
@@ -62,8 +26,9 @@ const adminSession = session({
     cookie: { maxAge: 6000000 }
 });
 
+// Updated MongoDBStore to use environment variable
 const userStore = new MongoDBStore({
-    uri: "mongodb://127.0.0.1:27017/user_sessions", // Replace with your MongoDB URI
+    uri: process.env.MONGODB_URI, // Changed to use environment variable
     collection: "user_sessions",
 });
 
@@ -85,11 +50,11 @@ app.use(flash());
 const path = require('path');
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
-//for user routes
+// For user routes
 const userRoute = require('./routes/userRoute');
 app.use('/', userSession, userRoute);
 
-//for admin routes
+// For admin routes
 const adminRoute = require('./routes/adminRoute');
 app.use('/admin', adminSession, adminRoute);
 

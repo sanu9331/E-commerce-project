@@ -326,91 +326,7 @@ const completeOrder = async (req, res) => {
 
 
 //******* payment ********
-// const placeOrder = async (req, res) => {
-//     try {
-//         const { items, quantity, totalPrice, paymentMethod, address, productName, } = req.body;
-//         const userId = req.session.user_id;
 
-//         console.log('Selected Payment Method:', paymentMethod);
-
-//         if (paymentMethod === 'cashOnDelivery') {
-//             // Code for credit card or PayPal payment method
-// const populatedItems = await Promise.all(
-//     items.map(async (itemId, index) => {
-//         const cartItem = await Cart.findById(itemId).populate('product_id', 'name');
-//         return {
-//             product: {
-//                 _id: cartItem.product_id,
-//                 name: cartItem.product_id.name,
-//             },
-//             quantity: cartItem.quantity,
-//             price: cartItem.price,
-//         };
-//     })
-// );
-
-//             const order = new Order({
-//                 customer: userId,
-//                 status: 'pending',
-//                 paymentMethod,
-//                 orderAddress: address,
-//                 totalAmount: totalPrice,
-//                 items: populatedItems,
-//                 orderDate: new Date(),
-//                 quantity: quantity
-//             });
-
-//             await order.save();
-
-//             res.redirect('/orderPlaced');
-//         } else if (paymentMethod === 'creditCard' || paymentMethod === 'payPal') {
-//             console.log('payment method=', paymentMethod);
-//             // Code for cash on delivery payment method
-
-//             const razorpays = new Razorpay({
-//                 key_id: "rzp_test_2iKg9k1NXeJb8P",
-//                 key_secret: "Uv4qKlGbPrc5cvE33Q5nWKWx"
-//             });
-
-//             const amount = totalPrice * 100
-//             const options = {
-//                 amount: amount,
-//                 currency: 'INR',
-//                 receipt: 'razorUser@gmail.com'
-//             };
-
-
-
-//             const response = await razorpays.orders.create(options);
-//             res.json(response);
-//             // const walletTransaction = new Wallet({
-//             //     paymentType: 'Razorpay',
-//             //     amount: response.amount / 100,
-//             //     date: new Date(),
-//             //     description: 'Added money to wallet',
-//             // });
-
-
-
-//         } else {
-//             // Handle unsupported payment methods or other conditions
-//             res.status(400).json({ success: false, error: 'Unsupported payment method' });
-//         }
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ success: false, error: 'Error placing order' });
-//     }
-// };
-
-
-
-// const razorpay = new Razorpay({
-//     key_id: 'rzp_test_2iKg9k1NXeJb8P',
-//     key_secret: 'Uv4qKlGbPrc5cvE33Q5nWKWx',
-// });
-
-
-// const { RAZORPAY_ID_KEY, RAZORPAY_SECRET_KEY } = process.env;
 require('dotenv').config();
 const Razorpay = require('razorpay');
 
@@ -539,32 +455,6 @@ const loadReturnOrders = async (req, res) => {
         console.log(error);
     }
 }
-
-// const submitOrderReturn = async (req, res) => {
-//     try {
-//         const { orderNumber, returnReason, returnOptions } = req.body;
-//         console.log('orderNumber=', orderNumber);
-//         console.log('returnReason=', returnReason);
-//         console.log('returnOptions=', returnOptions);
-//         // Assuming you have a model named Order and a field named 'status'
-//         // Update the order status to 'returned'
-//         const updatedOrder = await Order.findOneAndUpdate(
-//             { _id: orderNumber },
-//             { $set: { status: 'returned' } },
-//             { new: true }
-//         );
-
-//         if (!updatedOrder) {
-//             return res.status(404).send('Order not found');
-//         }
-
-//         res.redirect(`/viewUserOrders`);
-//         // res.redirect(`/ viewUserOrders ? orderNumber = ${ orderNumber }& returnReason=${ returnReason }& returnOptions=${ returnOptions } `);
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).send('Internal Server Error');
-//     }
-// }
 
 
 const submitOrderReturn = async (req, res) => {

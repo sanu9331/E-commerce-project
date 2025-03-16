@@ -7,27 +7,50 @@ const Order = require('../models/orderModel');
 
 
 
+// const loadCart = async (req, res) => {
+//     try {
+//         totalCartItems = await Cart.countDocuments({});
+//         const cartItems = await Cart.find({})
+
+//         let realTotalPrice = 0;
+
+//         cartItems.forEach(item => {
+//             realTotalPrice += item.discountedPrice * item.quantity;
+//         });
+//         console.log('realtotalprice:', realTotalPrice);
+
+//         res.render('cart', { cartItems, totalCartItems, realTotalPrice });
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// }
+
+
+
 const loadCart = async (req, res) => {
-
     try {
-        //const { store_id } = req.params;
-        // const cartItems = await Cart.find({ store_id });
-        totalCartItems = await Cart.countDocuments({});
-        const cartItems = await Cart.find({})
-
+        const cartItems = await Cart.find({});
+        const totalCartItems = await Cart.countDocuments({});
 
         let realTotalPrice = 0;
 
-        cartItems.forEach(item => {
+        // Calculate the realTotalPrice using the discountedPrice stored in the database
+        cartItems.forEach((item) => {
             realTotalPrice += item.discountedPrice * item.quantity;
         });
-        console.log('realtotalprice:', realTotalPrice);
 
-        res.render('cart', { cartItems, totalCartItems, realTotalPrice });
+        console.log("Real total price:", realTotalPrice);
+
+        // Pass cartItems to the EJS template
+        res.render("cart", { cartItems, totalCartItems, realTotalPrice });
     } catch (error) {
         console.log(error.message);
+        req.flash("error", "Failed to load cart");
+        res.redirect("/");
     }
-}
+};
+
+
 
 
 const buyNow = async (req, res) => {
@@ -73,45 +96,94 @@ const buyNow = async (req, res) => {
     }
 }
 
+// const addToCart = async (req, res) => {
+//     try {
+//         const { product_id, price, quantity, imageURL } = req.body;
+//         // const id = req.params.id;
+//         // const ProductData = await Product.findById({ _id: id });
+//         console.log('request body:', req.body);
+
+
+//         // Fetch the product from the database to get vendor_id and store_id
+//         const product = await Product.findById(product_id);
+//         //console.log('Fetched Product:', product);
+//         if (!product) {
+//             return res.status(404).json({ success: false, message: 'Product not found.' });
+//         }
+
+//         const existingCartItem = await Cart.findOne({ product_id });
+
+//         if (existingCartItem) {
+
+//             // existingCartItem.quantity++;
+//             // await existingCartItem.save();
+//         } else {
+//             const cart_obj = new Cart({
+//                 product_id: req.body.product_id,
+//                 name: req.body.name,
+//                 price: req.body.price,
+//                 quantity: quantity,
+//                 imageURL: imageURL,
+//             });
+//             await cart_obj.save();
+//             console.log('cart_obj=', cart_obj);
+//         }
+//         req.flash('success', 'added to cart successfully');
+//         return res.redirect('/home/product/details/' + product_id);
+//         // res.render("productDetail", { ProductData });
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+
+
 const addToCart = async (req, res) => {
     try {
         const { product_id, price, quantity, imageURL } = req.body;
-        // const id = req.params.id;
-        // const ProductData = await Product.findById({ _id: id });
-        console.log('request body:', req.body);
+        console.log("Request body:", req.body);
 
-
-        // Fetch the product from the database to get vendor_id and store_id
+        // Fetch the product from the database to get the discount
         const product = await Product.findById(product_id);
-        //console.log('Fetched Product:', product);
         if (!product) {
-            return res.status(404).json({ success: false, message: 'Product not found.' });
+            return res.status(404).json({ success: false, message: "Product not found." });
         }
 
+        // Check if the item already exists in the cart
         const existingCartItem = await Cart.findOne({ product_id });
 
         if (existingCartItem) {
-
+            // If the item already exists in the cart, update the quantity or other fields if needed
             // existingCartItem.quantity++;
             // await existingCartItem.save();
         } else {
-            const cart_obj = new Cart({
-                product_id: req.body.product_id,
-                name: req.body.name,
-                price: req.body.price,
-                quantity: quantity,
-                imageURL: imageURL,
+            // Calculate the discountedPrice
+            const discount = product.discount || 0; // Default discount to 0 if not provided
+            const discountedPrice = price * (1 - discount / 100); // Calculate discounted price
+
+            // Create a new cart item
+            const cartItem = new Cart({
+                product_id,
+                name: product.name,
+                price,
+                discountedPrice, // Save the discounted price
+                quantity,
+                imageURL,
             });
-            await cart_obj.save();
-            console.log('cart_obj=', cart_obj);
+
+            await cartItem.save();
+            console.log("Cart item saved:", cartItem);
         }
-        req.flash('success', 'added to cart successfully');
-        return res.redirect('/home/product/details/' + product_id);
-        // res.render("productDetail", { ProductData });
+
+        req.flash("success", "Added to cart successfully");
+        return res.redirect("/home/product/details/" + product_id);
     } catch (error) {
         console.log(error);
+        req.flash("error", "Failed to add to cart");
+        return res.redirect("/home/product/details/" + req.body.product_id);
     }
-}
+};
+
+
 
 // const removeFromCart = async (req, res) => {
 //     try {

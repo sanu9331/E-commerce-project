@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>user home</title>
+    <title>User Home</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -11,285 +11,543 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
 
-    <style>
-        .product-container:hover {
-            box-shadow: 0 0 10px rgba(18, 18, 18, 0.171);
-            /* Adjust the shadow values as needed */
-            transition: box-shadow 0.3s ease-in-out;
-            /* Optional: Add a smooth transition effect */
-        }
+    <!-- Font Awesome -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
-        #featured-brand img {
-            width: 40px;
-            height: 40px;
-        }
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
 
-        /* Small screen styles */
-        @media (max-width: 768px) {
-            #featured-brand img {
-                width: 40px;
-                height: 40px;
-            }
-        }
-    </style>
-
-    <!-- footer styles -->
+    <!-- Custom CSS -->
     <style>
         body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
             margin-top: 20px;
         }
 
-        .footer {
-            background: whitesmoke;
-            padding-bottom: 50px;
-            padding-top: 80px;
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .footer_menu {
-            margin-bottom: 20px;
+        /* Banner Carousel */
+        .full-width-banner {
+            .full-width-banner {
+                width: 100vw;
+                position: relative;
+                left: 50%;
+                transform: translateX(-50%);
+                overflow: hidden;
+                margin-top: 20px;
+
+            }
+
+            .banner-carousel {
+                margin-bottom: 2rem;
+                width: 100%;
+            }
+
+            .banner-carousel .carousel-inner,
+            .banner-carousel .carousel-item,
+            .banner-carousel img {
+                width: 100%;
+                height: 400px;
+                object-fit: cover;
+                border-radius: 0;
+            }
+
+            .banner-carousel .carousel-item img {
+                transition: transform 0.3s ease;
+                /* Smooth transition */
+            }
+
+            .banner-carousel .carousel-item:hover img {
+                transform: scale(1.02);
+                /* Very slight zoom effect */
+            }
+
+            .carousel-control-prev,
+            .carousel-control-next {
+                width: 5%;
+            }
+
+            .carousel-control-prev-icon,
+            .carousel-control-next-icon {
+                background-color: rgba(0, 0, 0, 0.5);
+                border-radius: 50%;
+                padding: 10px;
+            }
+
+
+        }
+
+
+        .banner-carousel {
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .banner-carousel .carousel-inner,
+        .banner-carousel .carousel-item,
+        .banner-carousel img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 0;
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 5%;
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            padding: 10px;
+        }
+
+        /* Top Categories */
+        .category-card {
+            background: #fff;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-card img {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .category-card p {
+            font-weight: 600;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        /* Featured Brands */
+        .slider {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide-track {
+            display: flex;
+            animation: scroll 20s linear infinite;
+            width: calc(200px * 10);
+        }
+
+        .slide {
+            width: 200px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .slide img {
+            width: 50px;
+            height: 50px;
+            transition: transform 0.3s ease;
+            margin-top: 5px;
+        }
+
+        .slide img:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(calc(-200px * 5));
+            }
+        }
+
+        /* Top Products */
+        .product-card {
+            background: #fff;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-card img {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-card .card-body {
+            padding: 1rem;
+        }
+
+        .product-card .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-card .card-text {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .product-card .discount {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .product-card .original-price {
+            color: #dc3545;
+            text-decoration: line-through;
+        }
+
+        /* Newsletter Section */
+        /* .newsletter-section {
+            background: linear-gradient(135deg, #18ACFE, #007bff);
+            padding: 3rem0;
+            border-radius: 20px;
+            color: #fff;
+
+            padding: 2rem 1rem;
+        } */
+        .newsletter-section {
+            background: linear-gradient(135deg, #18ACFE, #007bff);
+            padding: 2rem 1rem;
+            /* Add padding for top/bottom and left/right spacing */
+            border-radius: 20px;
+            color: #fff;
+            margin: 2rem auto;
+            /* Add margin for top/bottom spacing and center horizontally */
+            max-width: 1200px;
+            /* Limit the width to prevent stretching */
+            width: 90%;
+            /* Add space on the left and right */
+        }
+
+        .newsletter-section h2 {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .newsletter-section h6 {
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .newsletter-section .form-subscribe .input-group {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-section .form-subscribe input {
+            border-radius: 8px 0 0 8px;
+            border: none;
+            padding: 0.75rem;
+        }
+
+        .newsletter-section .form-subscribe button {
+            border-radius: 0 8px 8px 0;
+            border: none;
+            background: #28a745;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            transition: background 0.3s ease;
+        }
+
+        .newsletter-section .form-subscribe button:hover {
+            background: #218838;
+        }
+
+        /* Footer */
+        .footer {
+            background: #f8f9fa;
+            padding: 3rem 0;
+            margin-top: 3rem;
         }
 
         .footer_menu ul {
             list-style: none;
-            text-align: center;
+            padding: 0;
         }
 
         .footer_menu ul li {
             display: inline-block;
+            margin: 0 10px;
         }
 
         .footer_menu ul li a {
-            color: black;
-            padding: 0 10px;
-            -webkit-transition: 0.3s;
-            transition: 0.3s;
+            color: #333;
             text-decoration: none;
+            transition: color 0.3s ease;
         }
 
         .footer_menu ul li a:hover {
-            color: #554c86;
-        }
-
-        FOOTER .footer_profile {
-            margin-bottom: 40px;
+            color: #007bff;
         }
 
         .footer_profile ul {
-            list-style: outside none none;
-            margin: 0;
-            padding: 0
+            list-style: none;
+            padding: 0;
         }
 
         .footer_profile ul li {
             display: inline-block;
-        }
-
-        @media only screen and (max-width:480px) {
-            .footer_profile ul li {
-                margin: 2px;
-            }
-        }
-
-        .footer_profile ul li a img {
-            width: 60px;
+            margin: 0 10px;
         }
 
         .footer_profile ul li a {
-            background: #554c86;
+            background: #007bff;
+            color: #fff;
             width: 40px;
             height: 40px;
-            display: block;
-            text-align: center;
-            margin-right: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border-radius: 50%;
-            line-height: 40px;
-            box-sizing: border-box;
             text-decoration: none;
-            -webkit-transition: .3s;
-            transition: .3s;
-            color: #fff;
+            transition: background 0.3s ease;
         }
 
-
+        .footer_profile ul li a:hover {
+            background: #0056b3;
+        }
 
         .footer_copyright {
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            font-size: 12px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            color: black;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #555;
         }
     </style>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 </head>
 
 <body>
     <header>
-        <!-- place navbar here -->
+        <!-- Navbar -->
         <%- include('../layouts/header.ejs') %>
     </header>
-    <main>
 
-        <div class="container text-center">
+    <main>
+        <!-- Banner Carousel -->
+        <div class="full-width-banner">
+            <div id="bannerCarousel" class="carousel slide banner-carousel" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="https://server.jabaram.com/public/uploads/5ed6c541-91fa-4bd8-b0d5-90348d1c4040.jpg"
+                            class="d-block w-100" alt="Trending Offer 1">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Trending Offer 1</h5>
+                            <p>Get up to 50% off on selected items!</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://server.jabaram.com/public/uploads/439990c3-bf5e-4211-94ff-451c660aed69.jpg"
+                            class="d-block w-100" alt="Trending Offer 2">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Trending Offer 2</h5>
+                            <p>Free shipping on orders above $100!</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://m.media-amazon.com/images/G/31/img21/Laptops/Prime-Friday/prime-friday_header-banner_Acc.jpg"
+                            class="d-block w-100" alt="Trending Offer 3">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Trending Offer 3</h5>
+                            <p>Buy one, get one free on selected products!</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Top Categories -->
+        <div class="container text-center mt-5">
+            <h3 class="text-start mb-4">Top Categories</h3>
             <div class="row">
-                <h3 class="mt-5 fs-5 text-start">Top Categories</h3>
                 <% category.forEach(category=> { %>
-                    <div class="col-md-5 col-lg-4 col-xl-3 col-xxl-3 mb-lg mb-md-6 col-sm-6 col-12  ">
-                        <div style="border-radius: 5%; background-color: #18ACFE; width: 100%; min-width: 250px; height: 250px;"
-                            class="zoom-out-effect card border shadow p-2  mt-sm-5  mt-md-5 mt-lg-3 mt-xl-0 mt-xxl-0 mt-4">
-                            <a style="-webkit-user-drag: none;" href="/home/products/<%=category.category%>">
-                                <!-- Add your actual link in the href attribute -->
-                                <% for (let i=0; i <=0; i++) { %>
-                                    <img style="margin-bottom: 5px;
-                          -webkit-user-drag: none; 
-                          width: 300px; 
-                          height: 200px;" class="card-img-top img-fluid"
-                                        src="/images/categoryImages/<%= category.image%>"
-                                        alt="Product Image <%= i + 1 %>" />
-                                    <% } %>
+                    <div class="col-md-4 col-lg-3 mb-4">
+                        <div class="card category-card">
+                            <a href="/home/products/<%= category.category %>">
+                                <img src="/images/categoryImages/<%= category.image %>" class="card-img-top"
+                                    alt="Category Image">
                             </a>
-                            <p style="font-weight: bold; margin-top: 5px;">
-                                <%= category.category %>
-                            </p>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <%= category.category %>
+                                </p>
+                            </div>
                         </div>
                     </div>
                     <% }); %>
             </div>
-            <div class="d-flex justify-content-end">
-                <a href="/viewAllCategoryes" style="text-decoration: none; font-size: 18px; margin-top: 1rem;">view all
-                    categories➡</a>
+            <div class="d-flex justify-content-end mt-3">
+                <a href="/viewAllCategoryes" class="btn btn-outline-primary">View All Categories ➡</a>
             </div>
         </div>
 
-
-        <section id="featured-brand" class="mb-5"> <!-- Add margin-bottom here -->
-            <div class="container-fluid mt-5 mb-5">
-                <div class="row">
-                    <h1 class="col-12 text-center" style="font-size: 30px;">Featured Brands</h1>
-                    <div class="col-sm-12 col-md-12 col-lg-12 d-flex flex-wrap justify-content-evenly mt-5">
-                        <img class="mb-3" src="/images/apple.png" alt="">
-                        <img class="mb-3" src="/images/hp.png" alt="">
-                        <img class="mb-3" src="/images/dell.png" alt="">
-                        <img class="mb-3" src="/images/lenovo.png" alt="">
-                        <img class="mb-3" src="/images/samsung.png" alt="">
+        <!-- Featured Brands -->
+        <section id="featured-brand" class="my-5">
+            <div class="container-fluid">
+                <h1 class="text-center mb-4">Featured Brands</h1>
+                <div class="slider">
+                    <div class="slide-track">
+                        <!-- Duplicate the images for seamless looping -->
+                        <div class="slide">
+                            <img src="/images/apple.png" alt="Apple">
+                        </div>
+                        <div class="slide">
+                            <img src="/images/hp.png" alt="HP">
+                        </div>
+                        <div class="slide">
+                            <img src="/images/dell.png" alt="Dell">
+                        </div>
+                        <div class="slide">
+                            <img src="/images/lenovo.png" alt="Lenovo">
+                        </div>
+                        <div class="slide">
+                            <img src="/images/samsung.png" alt="Samsung">
+                        </div>
+                        <!-- Repeat the images -->
+                        <div class="slide">
+                            <img src="/images/apple.png" alt="Apple">
+                        </div>
+                        <div class="slide">
+                            <img src="/images/hp.png" alt="HP">
+                        </div>
+                        <div class="slide">
+                            <img src="/images/dell.png" alt="Dell">
+                        </div>
+                        <div class="slide">
+                            <img src="/images/lenovo.png" alt="Lenovo">
+                        </div>
+                        <div class="slide">
+                            <img src="/images/samsung.png" alt="Samsung">
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <%if(ProductData !=='undefined' ) {%>
-
-
-            <div class="container text-center mb-5">
+        <!-- Top Products -->
+        <% if (ProductData !=='undefined' ) { %>
+            <div class="container text-center mt-5">
+                <h3 class="text-start mb-4">Top Products</h3>
                 <div class="row">
-                    <h3 class="mt-5 fs-5 text-start">Top Products</h3>
                     <% ProductData.forEach(product=> { %>
-
-                        <div
-                            class="col-md-5 col-lg-4 col-xl-3 col-xxl-3 mb-lg mb-md-6 col-sm-6 col-12 product-container">
-                            <!-- Use col-lg-4 to include three cards in one row -->
-                            <a href="/home/product/details/<%=product._id%>" class="text-decoration-none text-dark">
-                                <div class="card border-0 h-100 p-2 " id="product-card">
-                                    <img style="margin-bottom: 5px; background-size: cover;" width="50px" height="230px"
-                                        class="card-img-top"
-                                        src="/images/productImages/<%= product.variants[0].images[0] %>"
-                                        alt="Product Image " />
-                                    <div class="card-body" style="height: 130px;">
-                                        <h6>
-                                            <%= product.name.substring(0, 40, product.name.length / 2) %>
-                                        </h6>
-                                        <p class="card-text"
-                                            data-price="<%= Number(product.price - (product.price * (product.discount / 100)))%>">
-                                            Price: <b>Rs:<%= Number(product.price - (product.price * (product.discount /
-                                                    100))).toLocaleString() %></b></p>
-                                        <div class="d-flex justify-content-between">
-                                            <p class="card-text text-success">%<%= product.discount %> off</p>
-                                            <p class="small text-danger"><s>Rs<%= product.price %></s></p>
-                                        </div>
-                                    </div>
+                        <div class="col-md-4 col-lg-3 mb-4">
+                            <a href="/home/product/details/<%= product._id %>" class="text-decoration-none text-dark">
+                                <div class="card product-card">
+                                    <% if (product.variants[0].images[0].startsWith('data:image/')) { %>
+                                        <img class="card-img-top" src="<%= product.variants[0].images[0] %>"
+                                            alt="Product Image">
+                                        <% } else { %>
+                                            <img class="card-img-top"
+                                                src="/images/productImages/<%= product.variants[0].images[0] %>"
+                                                alt="Product Image">
+                                            <% } %>
+                                                <div class="card-body">
+                                                    <h6 class="card-title">
+                                                        <%= product.name.substring(0, 40) %>
+                                                    </h6>
+                                                    <p class="card-text">
+                                                        Price: <b>Rs:<%= Number(product.price - (product.price *
+                                                                (product.discount / 100))).toLocaleString() %></b>
+                                                    </p>
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="discount">%<%= product.discount %> off</p>
+                                                        <p class="original-price"><s>Rs<%= product.price %></s></p>
+                                                    </div>
+                                                </div>
+                                </div>
                             </a>
-
-                            <!-- Inside the loop where you render product details -->
-                            <!-- <button class=" btn btn-outline-primary addToCartButton"
-                                data-product-id="<%= product._id %>"
-                                data-product-price="<%= Number(product.price - (product.price * (product.discount / 100))) %>">Add
-                                to Cart</button> -->
-
                         </div>
+                        <% }); %>
                 </div>
-                <% }); %>
-
+                <div class="d-flex justify-content-end mt-3">
+                    <a href="/viewAllProducts" class="btn btn-outline-primary">View All Products ➡</a>
+                </div>
             </div>
-            <div class="d-flex justify-content-end">
-                <a href="/viewAllProducts" style="text-decoration: none; font-size: 18px; margin-top: 1rem;">View All
-                    Products➡</a>
-            </div>
-            </div>
+            <% } %>
 
-            <%} %>
-
-
-                <section class="bg-img text-center mt-5 mb-5">
-                    <div class="container" style="background-color: #18ACFE; height: 300px; border-radius: 20px;">
-                        <h2 class="pt-4">
-                            NEWSLETTER
-                        </h2>
-                        <h6 class="font-alt mt-2">subscribe to our newsletter get latest updates</h6>
-                        <br><br>
+                <!-- Newsletter Section -->
+                <section class="newsletter-section mt-5">
+                    <div class="container text-center">
+                        <h2>NEWSLETTER</h2>
+                        <h6 class="mb-4">Subscribe to our newsletter to get the latest updates</h6>
                         <form class="form-subscribe" action="#">
                             <div class="input-group">
-                                <input type="text" class="form-control input-lg" placeholder="Your email address"
+                                <input type="text" class="form-control" placeholder="Your email address"
                                     pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
                                     title="Enter a valid email address" required>
-                                <span class="input-group-btn">
-                                    <button class="btn btn-success btn-lg" type="submit">Subscribe</button>
-                                </span>
+                                <button class="btn" type="submit">Subscribe</button>
                             </div>
                         </form>
                     </div>
                 </section>
-
-
     </main>
-    <footer>
-        <!-- place footer here -->
-        <div class="footer">
-            <div class="container">
-                <div class="row text-center">
-                    <div class="col-lg-12 col-sm-12 col-xs-12">
-                        <div class="footer_menu">
-                            <ul>
-                                <li><a href="#">Home</a></li>
-                                <li><a href="#">About</a></li>
-                                <li><a href="#">Service</a></li>
-                                <li><a href="#">Works</a></li>
-                                <li><a href="#">Contact</a></li>
-                            </ul>
-                        </div>
-                        <div class="footer_copyright">
-                            <p>© 2021 Sai. All Rights Reserved.</p>
-                        </div>
-                        <div class="footer_profile">
-                            <ul>
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                            </ul>
-                        </div>
-                    </div><!--- END COL -->
-                </div><!--- END ROW -->
-            </div><!--- END CONTAINER -->
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center">
+            <div class="footer_menu">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Service</a></li>
+                    <li><a href="#">Works</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer_profile mt-4">
+                <ul>
+                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                    <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                </ul>
+            </div>
+            <div class="footer_copyright mt-3">
+                <p>© 2021 Sai. All Rights Reserved.</p>
+            </div>
         </div>
-
-
     </footer>
+
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>

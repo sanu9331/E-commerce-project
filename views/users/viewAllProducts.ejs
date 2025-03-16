@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>viewAllProducts</title>
+    <title>View All Products</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -11,389 +11,308 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
 
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+    <!-- Custom CSS -->
     <style>
-        .product-container:hover {
-            box-shadow: 0 0 10px rgba(18, 18, 18, 0.171);
-            /* Adjust the shadow values as needed */
-            transition: box-shadow 0.3s ease-in-out;
-            /* Optional: Add a smooth transition effect */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
         }
-    </style>
-    <style>
-        .main-search-input {
+
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Filter and Search Section */
+        .filter-section {
             background: #fff;
-            padding: 0 120px 0 0;
-            border-radius: 1px;
-            margin-top: 200px;
-            box-shadow: 0px 0px 0px 6px rgba(255, 255, 255, 0.3);
-            border: 1px solid #ccc;
-
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
         }
 
-        .fl-wrap {
-            float: left;
-            width: 100%;
-            position: relative;
+        .filter-section label {
+            font-weight: 500;
+            color: #333;
         }
 
-        .main-search-input:before {
-            content: '';
-            position: absolute;
-            bottom: -40px;
-            width: 50px;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.41);
-            left: 50%;
-            margin-left: -25px;
+        .filter-section input {
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 0.5rem;
         }
 
-        .main-search-input-item {
-            float: left;
-            width: 100%;
-            box-sizing: border-box;
-            border-right: 1px solid #eee;
-            height: 50px;
-            position: relative;
-        }
-
-        .main-search-input-item input:first-child {
-            border-radius: 100%;
-        }
-
-        .main-search-input-item input {
-            float: left;
-            border: none;
-            width: 100%;
-            height: 50px;
-            padding-left: 20px;
-        }
-
-        .main-search-button {
-
-            background: #4DB7FE;
-        }
-
-        .main-search-button {
-            position: absolute;
-            right: 0px;
-            height: 50px;
-            width: 120px;
+        .filter-section button {
+            background: #007bff;
             color: #fff;
-            top: 0;
             border: none;
-            border-top-right-radius: 0px;
-            border-bottom-right-radius: 0px;
-            cursor: pointer;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            transition: background 0.3s ease;
         }
 
-        .main-search-input-wrap {
-
-            max-width: 365px;
-            margin: 20px auto;
-            /* position: relative; */
-
+        .filter-section button:hover {
+            background: #0056b3;
         }
 
-        :focus {
-            outline: 0;
+        .search-section {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
         }
 
+        .search-section input {
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 0.5rem;
+        }
 
-        @media only screen and (max-width: 768px) {
-            .main-search-input {
-                background: rgba(255, 255, 255, 0.2);
-                padding: 14px 20px 10px;
-                border-radius: 10px;
-                box-shadow: 0px 0px 0px 10px rgba(255, 255, 255, 0.0);
+        .search-section button {
+            background: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .search-section button:hover {
+            background: #218838;
+        }
+
+        /* Product Cards */
+        .product-card {
+            background: #fff;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-card img {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-card .card-body {
+            padding: 1rem;
+        }
+
+        .product-card .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-card .card-text {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .product-card .discount {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .product-card .original-price {
+            color: #dc3545;
+            text-decoration: line-through;
+        }
+
+        /* Pagination */
+        .pagination .page-item.active .page-link {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .pagination .page-link {
+            color: #007bff;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Fade-in Animation for Product Cards */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
 
-            .main-search-input-item {
-                width: 100%;
-                border: 1px solid #eee;
-                height: 50px;
-                border: none;
-                margin-bottom: 10px;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
+        }
 
-            .main-search-input-item input {
-                border-radius: 6px !important;
-                background: #fff;
-            }
-
-            .main-search-button {
-                position: relative;
-                float: left;
-                width: 100%;
-                border-radius: 6px;
-            }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
         }
     </style>
 </head>
 
 <body>
     <header>
-        <!-- place navbar here -->
+        <!-- Navbar -->
         <%- include('../layouts/header.ejs') %>
     </header>
+
     <main>
-        <div class="container text-center mb-5" style="margin-top: 2rem;">
-            <div class="row align-items-center">
-                <div class="col">
-                    <h3 class="mt-5 fs-5 text-start">All Products</h3>
-                </div>
-
-                <!-- Filter by Min and Max Price -->
-                <div class="col-md-6  d-flex justify-content-end">
-                    <form action="/viewAllProducts" method="get">
-                        <div class="filter-content collapse show" id="collapse_3"
-                            style="display: inline-block; background-color: whitesmoke">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Min</label>
-                                        <input class="form-control" placeholder="$0" type="number" name="min" min="0"
-                                            style="width: 7rem;">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>Max</label>
-                                        <input class="form-control" placeholder="$1,0000" type="number" name="max"
-                                            min="0" style="width: 7rem;">
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-block btn-outline-secondary">Apply</button>
-                            </div>
+        <div class="container mt-5">
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <h4 class="mb-4">Filter Products</h4>
+                <form action="/viewAllProducts" method="get">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label for="minPrice">Min Price</label>
+                            <input type="number" class="form-control" id="minPrice" name="min" placeholder="$0" min="0">
                         </div>
-                    </form>
-                </div>
+                        <div class="col-md-5">
+                            <label for="maxPrice">Max Price</label>
+                            <input type="number" class="form-control" id="maxPrice" name="max" placeholder="$1,0000"
+                                min="0">
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn w-100">Apply</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
-                <!-- Sort and Search elements -->
-                <div class="col-md-3">
-                    <!-- Sort dropdown -->
-                    <select id="sortSelect" class="form-select mb-3">
-                        <option value="sort by" <% if (sortBy==='sort by' ) { %>selected<% } %>>Sort by</option>
-                        <option value="highest" <% if (sortBy==='highest' ) { %>selected<% } %>>Highest Price</option>
-                        <option value="lowest" <% if (sortBy==='lowest' ) { %>selected<% } %>>Lowest Price</option>
-                        <option value="best selling">Best Selling</option>
-                        <option value="most rated">Most Rated</option>
-                    </select>
-                    <!-- Search input -->
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search Products..." id="searchInput">
-                        <button class="btn btn-primary" type="button" id="searchButton">Search</button>
+            <!-- Search Section -->
+            <div class="search-section">
+                <h4 class="mb-4">Search Products</h4>
+                <div class="row">
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search Products...">
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button class="btn w-100" id="searchButton">Search</button>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <!-- Product cards and pagination -->
-        <div class="container">
+            <!-- Product Cards -->
             <div class="row">
                 <% productData.forEach(product=> { %>
                     <% if (product.status===true) { %>
-                        <div
-                            class="col-md-5 col-lg-4 col-xl-3 col-xxl-3 mb-lg mb-md-6 col-sm-6 col-12 product-container">
-                            <!-- Use col-lg-4 to include three cards in one row -->
+                        <div class="col-md-4 col-lg-3 mb-4 fade-in">
                             <a href="/home/product/details/<%=product._id%>" class="text-decoration-none text-dark">
-                                <div class="card border-0 h-100 p-2 " id="product-card">
-
-                                    <!-- <img style="margin-bottom: 5px; background-size: cover;" width="50px" height="230px"
-                                    class="card-img-top"
-                                    src="/images/productImages/<%= product.variants[0].images[0] %>"
-                                    alt="Product Image " /> -->
+                                <div class="card product-card">
                                     <% if (product.variants[0].images[0].startsWith('data:image/')) { %>
-                                        <img style="margin-bottom: 5px; background-size: cover;" width="50px"
-                                            height="230px" class="card-img-top"
-                                            src="<%= product.variants[0].images[0] %>" />
+                                        <img class="card-img-top" src="<%= product.variants[0].images[0] %>"
+                                            alt="Product Image">
                                         <% } else { %>
-                                            <img style="margin-bottom: 5px; background-size: cover;" width="50px"
-                                                height="230px" class="card-img-top"
-                                                src="/images/productImages/<%= product.variants[0].images[0] %>" />
+                                            <img class="card-img-top"
+                                                src="/images/productImages/<%= product.variants[0].images[0] %>"
+                                                alt="Product Image">
                                             <% } %>
-
-
-                                                <div class="card-body" style="height: 130px;">
-                                                    <h6>
-                                                        <%= product.name.substring(0, 40, product.name.length / 2) %>
+                                                <div class="card-body">
+                                                    <h6 class="card-title">
+                                                        <%= product.name.substring(0, 40) %>
                                                     </h6>
-                                                    <p class="card-text"
-                                                        data-price="<%= Number(product.price - (product.price * (product.discount / 100)))%>">
+                                                    <p class="card-text">
                                                         Price: <b>Rs:<%= Number(product.price - (product.price *
-                                                                (product.discount / 100))).toLocaleString() %></b></p>
+                                                                (product.discount / 100))).toLocaleString() %></b>
+                                                    </p>
                                                     <div class="d-flex justify-content-between">
-                                                        <p class="card-text text-success">%<%= product.discount %> off
-                                                        </p>
-                                                        <p class="small text-danger"><s>Rs<%= product.price %></s></p>
+                                                        <p class="discount">%<%= product.discount %> off</p>
+                                                        <p class="original-price"><s>Rs<%= product.price %></s></p>
                                                     </div>
                                                 </div>
+                                </div>
                             </a>
-
-
-
-                            <!-- Inside the loop where you render product details -->
-                            <!-- <button class=" btn btn-outline-primary addToCartButton"
-                            data-product-id="<%= product._id %>"
-                            data-product-price="<%= Number(product.price - (product.price * (product.discount / 100))) %>">Add
-                            to Cart</button> -->
-
-
                         </div>
-
-
-            </div>
-            <% } %>
-                <% }); %>
-
-
-
-        </div>
-        </div>
-
-
-
-        <!-- Pagination code -->
-        <div class="container mt-4">
-            <!-- <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center">
-                            <% if (currentPage> 1) { %>
-                                <li class="page-item">
-                                    <a class="page-link"
-                                        href="/viewAllProducts?page=<%= currentPage - 1 %>&sortBy=<%= sortBy %>&search=<%= search %>"
-                                        aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                <% } %>
-
-                                    <% for (let i=1; i <=totalPages; i++) { %>
-                                        <li class="page-item <%= i === currentPage ? 'active' : '' %>">
-                                            <a class="page-link"
-                                                href="/viewAllProducts?page=<%= i %>&sortBy=<%= sortBy %>&search=<%= search %>">
-                                                <%= i %>
-                                            </a>
-                                        </li>
-                                        <% } %>
-
-                                            <% if (currentPage < totalPages) { %>
-                                                <li class="page-item">
-                                                    <a class="page-link"
-                                                        href="/viewAllProducts?page=<%= currentPage + 1 %>&sortBy=<%= sortBy %>&search=<%= search %>"
-                                                        aria-label="Next">
-                                                        <span aria-hidden="true">&raquo;</span>
-                                                    </a>
-                                                </li>
-                                                <% } %>
-                        </ul>
-                    </nav> -->
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
-                    <% if (currentPage> 1) { %>
-                        <li class="page-item">
-                            <a class="page-link"
-                                href="/viewAllProducts?page=<%= currentPage - 1 %>&sortBy=<%= sortBy %>&search=<%= search %>"
-                                aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
                         <% } %>
+                            <% }); %>
+            </div>
 
-                            <% const maxPagesToShow=1; // Set the maximum number of pages to display %>
-                                <% const startPage=Math.max(1, currentPage - maxPagesToShow); %>
-                                    <% const endPage=Math.min(totalPages, startPage + maxPagesToShow * 2 - 1); %>
+            <!-- Pagination -->
+            <div class="d-flex justify-content-center mt-4">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <% if (currentPage> 1) { %>
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="/viewAllProducts?page=<%= currentPage - 1 %>&sortBy=<%= sortBy %>&search=<%= search %>"
+                                    aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <% } %>
 
-                                        <% if (startPage> 1) { %>
-                                            <li class="page-item disabled">
-                                                <span class="page-link">...</span>
+                                <% for (let i=1; i <=totalPages; i++) { %>
+                                    <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                        <a class="page-link"
+                                            href="/viewAllProducts?page=<%= i %>&sortBy=<%= sortBy %>&search=<%= search %>">
+                                            <%= i %>
+                                        </a>
+                                    </li>
+                                    <% } %>
+
+                                        <% if (currentPage < totalPages) { %>
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                    href="/viewAllProducts?page=<%= currentPage + 1 %>&sortBy=<%= sortBy %>&search=<%= search %>"
+                                                    aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
                                             </li>
                                             <% } %>
-
-                                                <% for (let i=startPage; i <=endPage; i++) { %>
-                                                    <li class="page-item <%= i === currentPage ? 'active' : '' %>">
-                                                        <a class="page-link"
-                                                            href="/viewAllProducts?page=<%= i %>&sortBy=<%= sortBy %>&search=<%= search %>">
-                                                            <%= i %>
-                                                        </a>
-                                                    </li>
-                                                    <% } %>
-
-                                                        <% if (endPage < totalPages) { %>
-                                                            <li class="page-item disabled">
-                                                                <span class="page-link">...</span>
-                                                            </li>
-                                                            <% } %>
-
-                                                                <% if (currentPage < totalPages) { %>
-                                                                    <li class="page-item">
-                                                                        <a class="page-link"
-                                                                            href="/viewAllProducts?page=<%= currentPage + 1 %>&sortBy=<%= sortBy %>&search=<%= search %>"
-                                                                            aria-label="Next">
-                                                                            <span aria-hidden="true">&raquo;</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <% } %>
-                </ul>
-            </nav>
-
+                    </ul>
+                </nav>
+            </div>
         </div>
-
-        </div>
-
     </main>
 
     <footer>
-        <!-- place footer here -->
+        <!-- Footer -->
     </footer>
 
-    <!-- <script>
-        // Add this script block to handle the dropdown change and redirect to the sorted URL
-        const sortSelect = document.getElementById('sortSelect');
-        const searchInput = document.getElementById('searchInput');
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
 
-        sortSelect.addEventListener('change', function () {
-            const selectedValue = this.value;
-            console.log('Selected value:', selectedValue);
-            const searchValue = searchInput.value;
-            console.log('Search value:', searchValue);
-
-            // Redirect to the URL with the sorting parameter
-            //  window.location.href = `/viewAllProducts ? sortBy = ${ selectedValue }`;
-            window.location.href = `/viewAllProducts?sortBy=${selectedValue}&search=${searchValue}`;
-        });
-    </script> -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const sortSelect = document.getElementById('sortSelect');
             const searchInput = document.getElementById('searchInput');
             const searchButton = document.getElementById('searchButton');
 
-            // Function to redirect with sorting and search parameters
+            // Redirect with sorting and search parameters
             const redirectToSearch = () => {
                 const selectedValue = sortSelect.value;
                 const searchValue = searchInput.value;
                 window.location.href = `/viewAllProducts?sortBy=${selectedValue}&search=${searchValue}`;
             };
 
-            // Event listener for sort select change
-            sortSelect.addEventListener('change', function () {
-                redirectToSearch();
-            });
-
-            // Event listener for search button click
-            searchButton.addEventListener('click', function () {
-                redirectToSearch();
-            });
+            // Event listeners
+            sortSelect.addEventListener('change', redirectToSearch);
+            searchButton.addEventListener('click', redirectToSearch);
         });
     </script>
-
-
-    <!-- Bootstrap JavaScript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-        crossorigin="anonymous"></script>
 </body>
 
 </html>

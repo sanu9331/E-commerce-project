@@ -9,6 +9,7 @@ const loadHome = async (req, res) => {
         console.log(currentDate);
         const ProductData = await productModel.find({}).limit(4);
         const banner = await bannerModel.find({ endDate: { $gt: currentDate } });
+        console.log('ProductDataaa:', JSON.stringify(ProductData, null, 2));
         res.render("home", { category, banner, ProductData });
     } catch (error) {
         console.log(error.message);
@@ -201,6 +202,7 @@ const productDetail = async (req, res) => {
         const id = req.params.id;
         const color = req.params.color;
         const ProductData = await productModel.findById({ _id: id });
+        console.log('productData=', ProductData)
         res.render("productDetail", { ProductData });
     } catch (error) {
         console.log(error.message);

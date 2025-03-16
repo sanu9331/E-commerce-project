@@ -1,50 +1,20 @@
-// const mongoose = require("mongoose");
-// mongoose.connect("mongodb://127.0.0.1:27017/user_management_system");
 
-// const express = require("express");
-// const app = express();
-
-// //changes sanu
-// const session = require("express-session");
-// const nocache = require("nocache");
-// app.use(nocache());
-// app.use(
-//     session({
-//         secret: "session key",
-//         resave: false,
-//         saveUninitialized: true,
-//         cookie: { maxAge: 6000000 }
-//     })
-// );
-
-// // Serve static files from the 'public' directory
-// const path = require('path');
-// app.use('/images', express.static(path.join(__dirname, 'public/images')));
-
-// //for user routes
-// const userRoute = require('./routes/userRoute');
-// app.use('/', userRoute);
-
-// //for admin routes
-// const adminRoute = require('./routes/adminRoute');
-// app.use('/admin', adminRoute);
-
-
-
-
-// app.listen(3000, function () {
-//     console.log('server is running on port 3000');
-// })
-
-
+const mongoose = require("mongoose");
 require('dotenv').config();
 
 
 const mongoURL = process.env.MONGO_URL;
-console.log('mongo url-', mongoURL)
+console.log("Trying to connect to MongoDB:", mongoURL);
 
-const mongoose = require("mongoose");
-mongoose.connect(mongoURL);
+mongoose.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log("✅ Connected to MongoDB successfully!"))
+    .catch(err => {
+        console.error("❌ MongoDB connection error:", err.message);
+        process.exit(1); // Stop the server if MongoDB fails to connect
+    });
+
+
+// mongoose.connect(mongoURL);
 
 const express = require("express");
 const app = express();
@@ -88,7 +58,11 @@ app.use(flash());
 
 // Serve static files from the 'public' directory
 const path = require('path');
+// app.use('/images', express.static(path.join(__dirname, 'public / images')));
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
+
+console.log('Static files served from:', path.join(__dirname, 'public'));
+
 
 //for user routes
 const userRoute = require('./routes/userRoute');

@@ -394,76 +394,6 @@
                                                                                     </p>
                                                                                     <% } %>
                                                                 </div>
-
-
-
-
-                                                                <!-- <div class="row">
-                                                                    
-                                                                <div class="col-lg-4">
-                                                                    <div class="mb-3">
-                                                                        <label class="form-label"
-                                                                            for="country">Country</label>
-                                                                        <% if (user && user.country) { %>
-                                                                            
-                                                                <input type="text" class="form-control" id="country"
-                                                                    name="country" placeholder="Enter Country"
-                                                                    value="<%= user.country %>">
-                                                                <% } else { %>
-                                                                   
-                                                                <select class="form-control form-select" id="country"
-                                                                    name="country" title="Country" required>
-                                                                    <option value="0">Select Country
-                                                                    </option>
-                                                                    <option value="Afghanistan">
-                                                                        Afghanistan
-                                                                    </option>
-                                                                    <option value="Albania">Albania
-                                                                    </option>
-                                                                    <option value="Algeria">Algeria
-                                                                    </option>
-                                                                    <option value="American Samoa">
-                                                                        American
-                                                                        Samoa</option>
-                                                                    <option value="Andorra">Andorra
-                                                                    </option>
-                                                                    <option value="Angola">Angola
-                                                                    </option>
-                                                                    <option value="Anguilla">
-                                                                        Anguilla</option>
-                                                                    <option value="India">India
-                                                                    </option>
-                                                                    
-                                                                </select>
-                                                                <% } %>
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="col-lg-4">
-                                                        <div class="mb-0">
-                                                            <label class="form-label" for="city">City
-                                                            </label>
-                                                            <input type="text" class="form-control" id="city"
-                                                                name="city" placeholder="Enter Postal code"
-                                                                value="<%= user ? user.city : '' %>" required>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-4">
-                                                        <div class="mb-0">
-                                                            <label class="form-label" for="zipCode">Zip
-                                                                / Postal
-                                                                code</label>
-                                                            <input type="number" class="form-control" id="zipCode"
-                                                                name="zipCode" placeholder="Enter Postal code"
-                                                                value="<%= user ? user.zipCode : '' %>" required>
-                                                        </div>
-                                                    </div>
-                                                </div> -->
-
-                                                                <!-- <button type="submit"
-                                                                    class="btn btn-success">Save</button> -->
                                                             </form>
                                                         </div>
                                                     </div>
@@ -704,15 +634,6 @@
 
                                                                 <% }); %>
 
-                                                                    <!-- <tr>
-                                                                        <td colspan="2">
-                                                                            <h5 class="font-size-14 m-0">Shipping Charge
-                                                                                :</h5>
-                                                                        </td>
-                                                                        <td>
-                                                                            $ 25
-                                                                        </td>
-                                                                    </tr> -->
                                                                     <tr class="bg-light">
                                                                         <td colspan="2">
                                                                             <h5 class="font-size-14 m-0">Total:</h5>
@@ -801,14 +722,14 @@
 
                                             <form id="orderForm" action="/place-order" class="pay-form" method="POST"
                                                 onsubmit="setPaymentMethod()">
-                                                <!-- Include the necessary input fields for order placement -->
+
                                                 <input type="hidden" name="user" value="<%= user._id %>">
 
-                                                <!-- Loop through cart items to include in the order -->
+
 
                                                 <% cartItems.forEach((item, index)=> { %>
                                                     <input type="hidden" name="items[]" value="<%= item._id %>">
-                                                    <!-- Include product name and description -->
+
                                                     <input type="hidden" name="productName" value="<%= item.name %>">
 
                                                     <input type="hidden" name="quantity" value="<%= item.quantity %>">
@@ -817,7 +738,7 @@
 
                                                     <% }); %>
 
-                                                        <!-- Include other necessary input fields, e.g., totalPrice -->
+
                                                         <input type="hidden" name="customer" value="<%= user._id %>">
                                                         <input type="hidden" name="totalPrice" id="totalPrice"
                                                             value="<%= totalPrice %>">
@@ -825,14 +746,12 @@
                                                             value="<%= totalPrice %>">
                                                         <input type="hidden" name="paymentMethod" id="paymentMethod">
                                                         <input type="hidden" name="address" id="selectedAddress">
-                                                        <!-- Add this input field inside the form -->
+
                                                         <input type="hidden" name="razorpayPaymentId"
                                                             id="razorpayPaymentId">
 
 
-                                                        <!-- Add any additional fields needed for order placement -->
 
-                                                        <!-- Submit button to place the order -->
                                                         <button type="submit" id="payButton"
                                                             class="btn btn-success">Place
                                                             Order</button>
@@ -889,13 +808,13 @@
                     </div>
 
     </main>
-    <!-- Add this in the head section of your HTML -->
+
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <script>
         // JavaScript function to set the selected payment method
         function setPaymentMethod() {
-            // Get the selected payment method
+
             var paymentMethodInputs = document.getElementsByName('paymentMethod');
             var selectedPaymentMethod;
 
@@ -906,26 +825,23 @@
                 }
             }
 
-            // Set the value of the hidden input field
+
             document.getElementById('paymentMethod').value = selectedPaymentMethod;
 
 
-            // Get the selected address
+
             var addressInputs = document.getElementsByName('address');
             var selectedAddress;
 
             for (var i = 0; i < addressInputs.length; i++) {
                 if (addressInputs[i].checked) {
-                    selectedAddress = addressInputs[i].value; // Assuming your address inputs have IDs
+                    selectedAddress = addressInputs[i].value;
                     break;
                 }
             }
 
-            // Set the value of the hidden input field for address
             document.getElementById('selectedAddress').value = selectedAddress;
-
-            // Continue with form submission...
-            return true; // Make sure to return true to allow the form submission
+            return true;
         }
     </script>
 
@@ -961,7 +877,7 @@
 
                 for (var i = 0; i < addressInputs.length; i++) {
                     if (addressInputs[i].checked) {
-                        selectedAddress = addressInputs[i].value; // Assuming your address inputs have IDs
+                        selectedAddress = addressInputs[i].value;
                         break;
                     }
                 }
@@ -997,11 +913,9 @@
                 const responseData = await response.json();
 
                 if (selectedPaymentMethod === 'cashOnDelivery' && responseData.success) {
-                    // Redirect to order placed page for cash on delivery
                     window.location.href = '/orderPlaced';
                 } else {
                     console.log('response data ', responseData);
-                    // Initiate Razorpay Checkout
                     const options = {
                         key: responseData.key_id,
                         amount: responseData.amount,
@@ -1052,110 +966,6 @@
 
         });
     </script>
-    <!-- <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const addMoneyForm = document.getElementById('orderForm');
-
-            addMoneyForm.addEventListener('submit', async function (event) {
-                event.preventDefault();
-
-                const amount = document.getElementById('totalPrice').value * 100;
-
-                const paymentMethodInputs = document.getElementsByName('paymentMethod');
-                let selectedPaymentMethod;
-
-                for (let i = 0; i < paymentMethodInputs.length; i++) {
-                    if (paymentMethodInputs[i].checked) {
-                        selectedPaymentMethod = paymentMethodInputs[i].id;
-                        break;
-                    }
-                }
-
-                const items = [];
-
-                if (selectedPaymentMethod === 'cashOnDelivery') {
-                    // If payment method is cashOnDelivery, submit the form for order placement
-                    const response = await fetch('/place-order', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ totalPrice: amount, paymentMethod: selectedPaymentMethod, items[] }),
-                    });
-
-                    const responseData = await response.json();
-
-                    if (responseData.success) {
-                        // Redirect to order placed page for cash on delivery
-                        window.location.href = '/orderPlaced';
-                    } else {
-                        // Handle errors for cash on delivery
-                        console.error(responseData.error);
-                    }
-                } else {
-                    // If payment method is creditCard or payPal, initiate Razorpay
-                    const response = await fetch('/place-order', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ totalPrice: amount, paymentMethod: selectedPaymentMethod }),
-                    });
-
-                    const responseData = await response.json();
-
-                    // Initiate Razorpay Checkout
-                    const options = {
-                        key: 'rzp_test_2iKg9k1NXeJb8P',
-                        amount: amount,
-                        currency: responseData.currency,
-                        name: 'shopsphere',
-                        description: 'Add money to wallet',
-                        order_id: responseData.id,
-                        handler: function (response) {
-                            const paymentId = response.razorpay_payment_id;
-                            updateOrderStatus(paymentId);
-                            alert("payment successful");
-                        },
-                        prefill: {
-                            email: 'user@example.com',
-                            contact: '8675490402',
-                        },
-                        theme: {
-                            color: '#3399cc',
-                        },
-                    };
-
-                    const razorpayInstance = new Razorpay(options);
-                    razorpayInstance.open();
-                }
-            });
-
-            async function updateOrderStatus(paymentId) {
-                try {
-                    const response = await fetch('/capture-payment', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ paymentId }),
-                    });
-
-                    const responseData = await response.json();
-                    console.log(responseData);
-                } catch (error) {
-                    console.error(error);
-                }
-            }
-        });
-
-
-    </script> -->
-
-
-
-
-
 
 
     <script>
@@ -1170,7 +980,7 @@
     <!-- for selecting default address -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Check the first radio button when the page is loaded
+
             document.getElementById('selectedAddress1').checked = true;
         });
 
@@ -1180,7 +990,6 @@
     <!-- for showing the discounted price  -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
-        // Assuming the discountedTotalAmount is passed in the query parameter
         const discountedTotalAmount = new URLSearchParams(window.location.search).get('discount');
 
         if (discountedTotalAmount) {
@@ -1195,7 +1004,7 @@
         const couponApplied = urlParams.get('couponApplied');
 
         if (couponApplied) {
-            // Hide the coupon input, apply button, and show "Coupon Applied" text if couponApplied is true
+
             document.getElementById('couponInput').style.display = 'none';
             document.getElementById('applyButton').style.display = 'none';
             document.getElementById('couponAppliedText').style.display = 'inline'; // Show the "Coupon Applied" text

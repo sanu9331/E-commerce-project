@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>viewUserOrders</title>
+    <title>View User Orders</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -12,55 +12,111 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
     <style>
         body {
-            background-color: #eee;
+            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
         }
 
-        table.table tbody tr {
-            height: 40px;
-            /* Adjust the height as needed */
+        .table thead th {
+            background-color: #343a40;
+            color: #fff;
         }
 
-        /* Make buttons smaller */
+        .table tbody tr {
+            transition: background-color 0.3s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
         .btn {
             padding: 6px 12px;
             font-size: 14px;
-            /* Adjust the font size as needed */
+            border-radius: 4px;
         }
 
-        /* Responsive styles */
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .alert {
+            margin-top: 1rem;
+            margin-bottom: 0;
+        }
+
+        .scrollable-table {
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 7px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-content {
+            border-radius: 10px;
+        }
+
+        .modal-header {
+            background-color: #343a40;
+            color: #fff;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .pagination .page-link {
+            color: #007bff;
+        }
+
+        .pagination .page-link:hover {
+            color: #0056b3;
+        }
+
         @media (max-width: 768px) {
             .table {
                 font-size: 12px;
             }
 
             .btn {
-                padding: 0.5rem 0rem;
+                padding: 0.5rem 0.75rem;
                 font-size: 0.875rem;
             }
 
-            /* Adjust table cell padding */
-            .table thead th,
-            .table tbody td {
-                padding: 0.5rem;
-            }
-
-            /* Adjust modal content */
             .modal-content {
                 max-width: 90%;
                 margin: 0 auto;
             }
 
-            /* Adjust modal body text */
             .modal-body {
                 font-size: 14px;
             }
-        }
-
-        /* Enable scrolling for the table */
-        .scrollable-table {
-            max-height: 300px;
-            /* Adjust this value as needed */
-            overflow-y: auto;
         }
     </style>
 </head>
@@ -72,370 +128,300 @@
     </header>
     <main>
         <% if (messages.error) { %>
-            <div class="alert alert-danger">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <%= messages.error %>
-                    <button type="button" class="close" aria-label="Close" onclick="closeFlashMessage()">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" aria-label="Close" onclick="closeFlashMessage()"></button>
             </div>
             <% } else if (messages.success) { %>
-                <div class="alert alert-success">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <%= messages.success %>
-                        <button type="button" class="close" aria-label="Close" onclick="closeFlashMessage()">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" aria-label="Close"
+                            onclick="closeFlashMessage()"></button>
                 </div>
                 <% } %>
 
-                    <div>
-                        <p
-                            style="font-size: 2rem; font-family: 'Poppins', sans-serif; margin-top: 4rem; margin-left: 3rem;">
-                            orders
-                        </p>
-                    </div>
-                    <section
-                        style="background-color: #eee; width: 100%;  border-radius: 7px; margin-bottom: 8rem; margin-top: 1rem;">
-                        <div class="container">
-                            <section
-                                style="background-color: #b3bbc0; width: 100%; margin: 0 auto; padding: 10px; border-radius: 7px;">
-                                <div class="container">
-                                    <div class="scrollable-table">
-                                        <table class="table table-centered mb-0 table-nowrap"
-                                            style="background-color: white;">
-                                            <thead class="text-center table-dark">
+                    <div class="container mt-4">
+                        <h1 class="display-4 mb-4">Orders</h1>
+                        <section class="card">
+                            <div class="card-body">
+                                <div class="scrollable-table">
+                                    <table class="table table-hover table-centered mb-0">
+                                        <thead class="text-center">
+                                            <tr>
+                                                <th scope="col">Customer</th>
+                                                <th scope="col">Order Date</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Address</th>
+                                                <th scope="col">Payment Method</th>
+                                                <th scope="col">Total Amount</th>
+                                                <th scope="col">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% orders.forEach((order, orderIndex)=> { %>
                                                 <tr>
-                                                    <th class="border-top-0" scope="col">Customer</th>
-                                                    <th class="border-top-0" scope="col">Order Date</th>
-                                                    <th class="border-top-0" scope="col">Status</th>
-                                                    <th class="border-top-0" scope="col">Address</th>
-                                                    <th class="border-top-0" scope="col">Payment Method</th>
-                                                    <th class="border-top-0" scope="col">Total Amount</th>
-                                                    <!-- <th class="border-top-0" scope="col">payment</th> -->
-                                                    <th class="border-top-0" colspan="3"></th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-                                                <% orders.forEach((order, orderIndex)=> { %>
-                                                    <tr>
-                                                        <td>
-                                                            <% if (order.customer && order.customer.name) { %>
-                                                                ⭐<%= order.customer.name %>
-                                                                    <% } else { %>
-                                                                        No Name
-                                                                        <% } %>
-                                                        </td>
-                                                        <td>
-                                                            <!-- <%= order.orderDate.toDateString() %> -->
-                                                            <%= new Date(order.orderDate).toLocaleString([], {
-                                                                dateStyle: 'medium' , timeStyle: 'short' }) %>
-                                                        </td>
-                                                        <td>
-                                                            <% if (order.status==='Cancelled' ) { %>
-                                                                <span class="text-danger">
+                                                    <td>
+                                                        <% if (order.customer && order.customer.name) { %>
+                                                            ⭐<%= order.customer.name %>
+                                                                <% } else { %>
+                                                                    No Name
+                                                                    <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <%= new Date(order.orderDate).toLocaleString([], {
+                                                            dateStyle: 'medium' , timeStyle: 'short' }) %>
+                                                    </td>
+                                                    <td>
+                                                        <% if (order.status==='Cancelled' ) { %>
+                                                            <span class="text-danger">
+                                                                <%= order.status %>
+                                                            </span>
+                                                            <% } else if (order.status==='delivered' ) { %>
+                                                                <span class="text-success">
                                                                     <%= order.status %>
                                                                 </span>
-                                                                <% } else if (order.status==='delivered' ) { %>
-                                                                    <span class="text-success">
+                                                                <% } else if (order.status==='pending' ) { %>
+                                                                    <span class="text-info">
                                                                         <%= order.status %>
                                                                     </span>
-                                                                    <% } else if (order.status==='pending' ) { %>
+                                                                    <% } else if (order.status==='processing' ) { %>
                                                                         <span class="text-info">
                                                                             <%= order.status %>
                                                                         </span>
-                                                                        <% } else if (order.status==='processing' ) { %>
+                                                                        <% } else if (order.status==='shipped' ) { %>
                                                                             <span class="text-info">
                                                                                 <%= order.status %>
                                                                             </span>
-                                                                            <% } else if (order.status==='shipped' ) {
+                                                                            <% } else if (order.status==='returned' ) {
                                                                                 %>
-                                                                                <span class="text-info">
+                                                                                <span style="color: #ff69b4;">
                                                                                     <%= order.status %>
                                                                                 </span>
-                                                                                <% } else if (order.status==='returned'
-                                                                                    ) { %>
+                                                                                <% } else if
+                                                                                    (order.status==='returnApproved' ) {
+                                                                                    %>
                                                                                     <span style="color: #ff69b4;">
                                                                                         <%= order.status %>
                                                                                     </span>
                                                                                     <% } else if
-                                                                                        (order.status==='returnApproved'
+                                                                                        (order.status==='returnRejected'
                                                                                         ) { %>
-                                                                                        <span style="color: #ff69b4;">
+                                                                                        <span style="color: red;">
                                                                                             <%= order.status %>
                                                                                         </span>
-                                                                                        <% } else if
-                                                                                            (order.status==='returnRejected'
-                                                                                            ) { %>
-                                                                                            <span style="color: red;">
-                                                                                                <%= order.status %>
-                                                                                            </span>
-                                                                                            <% } %>
-                                                        </td>
-                                                        <td>
-                                                            <% const orderAddressString=order.orderAddress; %>
-                                                                <% if (orderAddressString) { %>
-                                                                    <% const
-                                                                        matches=orderAddressString.match(/'([^']+)'/g);
-                                                                        %>
-                                                                        <% if (matches) { %>
+                                                                                        <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <% const orderAddressString=order.orderAddress; %>
+                                                            <% if (orderAddressString) { %>
+                                                                <% const matches=orderAddressString.match(/'([^']+)'/g);
+                                                                    %>
+                                                                    <% if (matches) { %>
+                                                                        <% const addressComponents=matches.map(match=>
+                                                                            match.replace(/'/g, '').trim()); %>
                                                                             <% const
-                                                                                addressComponents=matches.map(match=>
-                                                                                match.replace(/'/g, '').trim()); %>
+                                                                                filteredComponents=addressComponents.slice(0,
+                                                                                -1); %>
                                                                                 <% const
-                                                                                    filteredComponents=addressComponents.slice(0,
-                                                                                    -1); %>
-                                                                                    <% const
-                                                                                        addressWithoutId=filteredComponents.join(', '); %>
-                                                            <p><%= addressWithoutId %></p>
-                                                            <% } else { %>
-                                                                <p>No address available</p>
-                                                                <% } %>
+                                                                                    addressWithoutId=filteredComponents.join(', '); %>
+                                                                                    <p><%= addressWithoutId %></p>
+                                                                                    <% } else { %>
+                                                                                        <p>No address available</p>
+                                                                                        <% } %>
+                                                                                            <% } else { %>
+                                                                                                <p>No address available</p>
+                                                                                                <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <%= order.paymentMethod %>
+                                                    </td>
+                                                    <td>
+                                                        <% if (order.couponDiscountPrice !== null) { %>
+                                                            $<%= order.couponDiscountPrice %>
                                                                 <% } else { %>
-                                                                    <p>No address available</p>
-                                                                    <% } %>
-                                                        </td>
-                                                        <td>
-                                                            <%= order.paymentMethod %>
-                                                        </td>
-                                                        <td>
-                                                            <% if (order.couponDiscountPrice !== null) { %>
-                                                                $ <%= order.couponDiscountPrice %>
-                                                                <% } else { %>
-                                                                    <!-- $ <%= (order.totalAmount / 100).toFixed(2) %> -->
                                                                     $<%= order.totalAmount %>
-                                                                    <% } %>
-                                                        </td>
-                                                        <td colspan="3"></td>
-                                                        <td colspan="6"></td>
-                                                        <td>
-                                                            <!-- <a href="#" class="btn btn-primary view-products-btn" data-bs-toggle="modal" data-bs-target="#mailModal2_<%= orderIndex %>">
-                                                            View Products
-                                                        </a> -->
-                                                            <!-- <a href="/orderDetailPage?orderIndex=<%= orderIndex %>">View Products</a> -->
-                                                            <a href="/orderDetailPage?orderId=<%= order._id %>">View Products</a>
-                                                        </td>
-                                                        <td>
-                                                            <% if (order.status === ' Cancelled') { %>
-                                                                                        <span class="text-danger">
-                                                                                            Cancelled
-                                                                                        </span>
-                                                                                        <% } else if
-                                                                                            (order.status==='delivered'
-                                                                                            ) { %>
-                                                                                            <!-- <span class="text-success">
-                                                        completed
-                                                    </span> -->
-                                                                                            <% const currentDate=new
-                                                                                                Date(); %>
-                                                                                                <% const
-                                                                                                    daysDifference=Math.floor((currentDate
-                                                                                                    - order.orderDate) /
-                                                                                                    (1000 * 60 * 60 *
-                                                                                                    24)); %>
-                                                                                                    <% if
-                                                                                                        (daysDifference
-                                                                                                        <=7) { %>
-                                                                                                        <a href="/returnOrders/<%= order._id %>"
-                                                                                                            class="btn btn-sm btn-primary">Return
-                                                                                                            Order</a>
-                                                                                                        <% } %>
+                                                                        <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <a href="/orderDetailPage?orderId=<%= order._id %>" class="btn btn-sm btn-primary">View Products</a>
+                                                        <% if (order.status === ' Cancelled') { %>
+                                                                                    <span
+                                                                                        class="text-danger">Cancelled</span>
+                                                                                    <% } else if
+                                                                                        (order.status==='delivered' ) {
+                                                                                        %>
+                                                                                        <% const currentDate=new Date();
+                                                                                            %>
+                                                                                            <% const
+                                                                                                daysDifference=Math.floor((currentDate
+                                                                                                - order.orderDate) /
+                                                                                                (1000 * 60 * 60 * 24));
+                                                                                                %>
+                                                                                                <% if (daysDifference
+                                                                                                    <=7) { %>
+                                                                                                    <a href="/returnOrders/<%= order._id %>"
+                                                                                                        class="btn btn-sm btn-primary">Return
+                                                                                                        Order</a>
+                                                                                                    <% } %>
+                                                                                                        <% } else if
+                                                                                                            (order.status==='returned'
+                                                                                                            ) { %>
+                                                                                                            <span
+                                                                                                                class="text-info">Return
+                                                                                                                Processing</span>
                                                                                                             <% } else if
-                                                                                                                (order.status==='returned'
+                                                                                                                (order.status==='processing'
+                                                                                                                ||
+                                                                                                                order.status==='shipped'
+                                                                                                                ||
+                                                                                                                order.status==='pending'
                                                                                                                 ) { %>
-                                                                                                                <span
-                                                                                                                    class="text-info">
-                                                                                                                    <!-- <%= order.status %> -->return
-                                                                                                                    processing
-                                                                                                                </span>
+                                                                                                                <a href="#"
+                                                                                                                    class="btn btn-sm btn-danger"
+                                                                                                                    data-bs-toggle="modal"
+                                                                                                                    data-bs-target="#exampleModal_<%= orderIndex %>">Cancel</a>
                                                                                                                 <% } else
                                                                                                                     if
-                                                                                                                    (order.status==='processing'
+                                                                                                                    (order.status==='returnApproved'
                                                                                                                     ) {
                                                                                                                     %>
-                                                                                                                    <a href="#"
-                                                                                                                        class="btn btn-sm btn-primary"
-                                                                                                                        data-bs-toggle="modal"
-                                                                                                                        data-bs-target="#exampleModal_<%= orderIndex %>">cancel</a>
+                                                                                                                    <span
+                                                                                                                        style="color: #ff69b4;">Return
+                                                                                                                        Approved</span>
                                                                                                                     <% } else
                                                                                                                         if
-                                                                                                                        (order.status==='shipped'
+                                                                                                                        (order.status==='returnRejected'
                                                                                                                         )
                                                                                                                         {
                                                                                                                         %>
-                                                                                                                        <a href="#"
-                                                                                                                            class="btn btn-sm btn-primary"
-                                                                                                                            data-bs-toggle="modal"
-                                                                                                                            data-bs-target="#exampleModal_<%= orderIndex %>">cancel</a>
-                                                                                                                        <% } else
-                                                                                                                            if
-                                                                                                                            (order.status==='pending'
-                                                                                                                            )
-                                                                                                                            {
+                                                                                                                        <span
+                                                                                                                            style="color: red;">Return
+                                                                                                                            Rejected</span>
+                                                                                                                        <% }
                                                                                                                             %>
-                                                                                                                            <a href="#"
-                                                                                                                                class="btn btn-sm btn-primary"
-                                                                                                                                data-bs-toggle="modal"
-                                                                                                                                data-bs-target="#exampleModal_<%= orderIndex %>">cancel</a>
-                                                                                                                            <% } else
-                                                                                                                                if
-                                                                                                                                (order.status==='returnApproved'
-                                                                                                                                )
-                                                                                                                                {
-                                                                                                                                %>
-                                                                                                                                <span
-                                                                                                                                    style="color: #ff69b4;">
-                                                                                                                                    return
-                                                                                                                                    approved
-                                                                                                                                </span>
-                                                                                                                                <% } else
-                                                                                                                                    if
-                                                                                                                                    (order.status==='returnRejected'
-                                                                                                                                    )
-                                                                                                                                    {
-                                                                                                                                    %>
-                                                                                                                                    <span
-                                                                                                                                        style="color: red;">
-                                                                                                                                        return
-                                                                                                                                        rejected
-                                                                                                                                    </span>
-                                                                                                                                    <% }
-                                                                                                                                        %>
-                                                        </td>
-                                                    </tr>
-                                                    <% }); %>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                    </section>
-
-                    <% orders.forEach((order, orderIndex)=> { %>
-                        <!-- view products modal box -->
-                        <section>
-                            <div class="modal fade" tabindex="-1" role="dialog" id="mailModal2_<%= orderIndex %>">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content border-top border-warning">
-                                        <div class="modal-body text-center">
-                                            <div class="mt-2 py-2">
-                                                <h4 class="h5">View Products</h4>
-                                            </div>
-
-                                            <% const orderProducts=order.items.map(item=> ({
-                                                name: item.product.name,
-                                                quantity: item.quantity,
-                                                price: item.price,
-                                                image: item.product.variants[0].images[0],
-                                                productId: item.product._id
-                                                })); %>
-
-                                                <% orderProducts.forEach(product=> { %>
-                                                    <div class="card"
-                                                        style="width: 18rem; display: inline-block; margin: 10px;">
-                                                        <img class="card-img-top"
-                                                            src="/images/productImages/<%= product.image %>"
-                                                            alt="Product Image">
-                                                        <div class="card-body">
-                                                            <p class="card-text">
-                                                                Name: <b>
-                                                                    <%= product.name %>
-                                                                </b><br>
-                                                                Quantity: <b>
-                                                                    <%= product.quantity %>
-                                                                </b><br>
-                                                                Price: <b>$ <%= product.price %></b><br>
-                                                                <a href="/home/product/details/<%= product.productId %>"
-                                                                    class="btn btn-outline-primary">View Details</a>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <% }); %>
-                                        </div>
-                                    </div>
+                                                    </td>
+                                                </tr>
+                                                <% }); %>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </section>
-                        <% }); %>
+                    </div>
 
-                            <!-- Button trigger modal -->
-                            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Launch demo modal
-                </button> -->
-
-                            <% orders.forEach((order, orderIndex)=> { %>
-                                <!-- Modal -->
-                                <div class="modal fade" id="exampleModal_<%= orderIndex %>" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                are you sure you want to cancel the order?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Close</button>
-                                                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                                                <a href="/cancel/<%= order._id %>" class="btn btn-primary">ok</a>
-                                            </div>
-                                        </div>
+                    <% orders.forEach((order, orderIndex)=> { %>
+                        <!-- View Products Modal -->
+                        <div class="modal fade" id="mailModal2_<%= orderIndex %>" tabindex="-1" role="dialog">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">View Products</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <% const orderProducts=order.items.map(item=> ({
+                                            name: item.product.name,
+                                            quantity: item.quantity,
+                                            price: item.price,
+                                            image: item.product.variants[0].images[0],
+                                            productId: item.product._id
+                                            })); %>
+                                            <% orderProducts.forEach(product=> { %>
+                                                <div class="card mb-3">
+                                                    <img class="card-img-top"
+                                                        src="/images/productImages/<%= product.image %>"
+                                                        alt="Product Image">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">
+                                                            <%= product.name %>
+                                                        </h5>
+                                                        <p class="card-text">
+                                                            Quantity: <b>
+                                                                <%= product.quantity %>
+                                                            </b><br>
+                                                            Price: <b>$<%= product.price %></b>
+                                                        </p>
+                                                        <a href="/home/product/details/<%= product.productId %>"
+                                                            class="btn btn-primary">View Details</a>
+                                                    </div>
+                                                </div>
+                                                <% }); %>
                                     </div>
                                 </div>
-                                <% }); %>
+                            </div>
+                        </div>
 
-    </main>
+                        <!-- Cancel Order Modal -->
+                        <div class="modal fade" id="exampleModal_<%= orderIndex %>" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Cancel Order</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you want to cancel this order?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <a href="/cancel/<%= order._id %>" class="btn btn-danger">Confirm</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% }); %>
 
-    <!-- Pagination Section -->
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center mt-4">
-            <% if (currentPage> 1) { %>
-                <li class="page-item">
-                    <a class="page-link" href="?page=<%= currentPage - 1 %>&limit=<%= limit %>" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <% } %>
-
-                    <% const visiblePages=2; // Adjust the number of visible page numbers as needed %>
-                        <% const startPage=Math.max(1, currentPage - visiblePages); %>
-                            <% const endPage=Math.min(totalPages, currentPage + visiblePages); %>
-
-                                <% if (startPage> 1) { %>
-                                    <li class="page-item disabled">
-                                        <span class="page-link">...</span>
-                                    </li>
-                                    <% } %>
-
-                                        <% for (let i=startPage; i <=endPage; i++) { %>
-                                            <li class="page-item <%= (i === currentPage) ? 'active' : '' %>">
-                                                <a class="page-link" href="?page=<%= i %>&limit=<%= limit %>">
-                                                    <%= i %>
-                                                </a>
-                                            </li>
-                                            <% } %>
-
-                                                <% if (endPage < totalPages) { %>
-                                                    <li class="page-item disabled">
-                                                        <span class="page-link">...</span>
-                                                    </li>
-                                                    <% } %>
-
-                                                        <% if (currentPage < totalPages) { %>
-                                                            <li class="page-item">
-                                                                <a class="page-link"
-                                                                    href="?page=<%= currentPage + 1 %>&limit=<%= limit %>"
-                                                                    aria-label="Next">
-                                                                    <span aria-hidden="true">&raquo;</span>
-                                                                </a>
+                            <!-- Pagination Section -->
+                            <nav aria-label="Page navigation" class="mt-4">
+                                <ul class="pagination justify-content-center">
+                                    <% if (currentPage> 1) { %>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page=<%= currentPage - 1 %>&limit=<%= limit %>"
+                                                aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+                                        <% } %>
+                                            <% const visiblePages=2; %>
+                                                <% const startPage=Math.max(1, currentPage - visiblePages); %>
+                                                    <% const endPage=Math.min(totalPages, currentPage + visiblePages);
+                                                        %>
+                                                        <% if (startPage> 1) { %>
+                                                            <li class="page-item disabled">
+                                                                <span class="page-link">...</span>
                                                             </li>
                                                             <% } %>
-        </ul>
-    </nav>
+                                                                <% for (let i=startPage; i <=endPage; i++) { %>
+                                                                    <li
+                                                                        class="page-item <%= (i === currentPage) ? 'active' : '' %>">
+                                                                        <a class="page-link"
+                                                                            href="?page=<%= i %>&limit=<%= limit %>">
+                                                                            <%= i %>
+                                                                        </a>
+                                                                    </li>
+                                                                    <% } %>
+                                                                        <% if (endPage < totalPages) { %>
+                                                                            <li class="page-item disabled">
+                                                                                <span class="page-link">...</span>
+                                                                            </li>
+                                                                            <% } %>
+                                                                                <% if (currentPage < totalPages) { %>
+                                                                                    <li class="page-item">
+                                                                                        <a class="page-link"
+                                                                                            href="?page=<%= currentPage + 1 %>&limit=<%= limit %>"
+                                                                                            aria-label="Next">
+                                                                                            <span
+                                                                                                aria-hidden="true">&raquo;</span>
+                                                                                        </a>
+                                                                                    </li>
+                                                                                    <% } %>
+                                </ul>
+                            </nav>
+    </main>
 
     <script>
         function closeFlashMessage() {
@@ -446,19 +432,13 @@
         }
     </script>
 
-    <footer>
-        <!-- place footer here -->
-    </footer>
-
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
-
 </body>
 
 </html>

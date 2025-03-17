@@ -28,8 +28,8 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        /* Filter and Search Section */
-        .filter-section {
+        /* Combined Filter and Search Section */
+        .filter-search-section {
             background: #fff;
             padding: 1.5rem;
             border-radius: 10px;
@@ -37,18 +37,18 @@
             margin-bottom: 2rem;
         }
 
-        .filter-section label {
+        .filter-search-section label {
             font-weight: 500;
             color: #333;
         }
 
-        .filter-section input {
+        .filter-search-section input {
             border-radius: 8px;
             border: 1px solid #ddd;
             padding: 0.5rem;
         }
 
-        .filter-section button {
+        .filter-search-section button {
             background: #007bff;
             color: #fff;
             border: none;
@@ -57,35 +57,8 @@
             transition: background 0.3s ease;
         }
 
-        .filter-section button:hover {
+        .filter-search-section button:hover {
             background: #0056b3;
-        }
-
-        .search-section {
-            background: #fff;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-        }
-
-        .search-section input {
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            padding: 0.5rem;
-        }
-
-        .search-section button {
-            background: #28a745;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            transition: background 0.3s ease;
-        }
-
-        .search-section button:hover {
-            background: #218838;
         }
 
         /* Product Cards */
@@ -176,38 +149,34 @@
 
     <main>
         <div class="container mt-5">
-            <!-- Filter Section -->
-            <div class="filter-section">
-                <h4 class="mb-4">Filter Products</h4>
+            <!-- Combined Filter and Search Section -->
+            <div class="filter-search-section">
+                <h4 class="mb-4">Filter and Search Products</h4>
                 <form action="/viewAllProducts" method="get">
-                    <div class="row">
-                        <div class="col-md-5">
+                    <div class="row g-3">
+                        <!-- Min Price -->
+                        <div class="col-md-3">
                             <label for="minPrice">Min Price</label>
                             <input type="number" class="form-control" id="minPrice" name="min" placeholder="$0" min="0">
                         </div>
-                        <div class="col-md-5">
+                        <!-- Max Price -->
+                        <div class="col-md-3">
                             <label for="maxPrice">Max Price</label>
                             <input type="number" class="form-control" id="maxPrice" name="max" placeholder="$1,0000"
                                 min="0">
                         </div>
+                        <!-- Search Input -->
+                        <div class="col-md-4">
+                            <label for="searchInput">Search Products</label>
+                            <input type="text" class="form-control" id="searchInput" name="search"
+                                placeholder="Search Products...">
+                        </div>
+                        <!-- Apply Button -->
                         <div class="col-md-2 d-flex align-items-end">
                             <button type="submit" class="btn w-100">Apply</button>
                         </div>
                     </div>
                 </form>
-            </div>
-
-            <!-- Search Section -->
-            <div class="search-section">
-                <h4 class="mb-4">Search Products</h4>
-                <div class="row">
-                    <div class="col-md-9">
-                        <input type="text" class="form-control" id="searchInput" placeholder="Search Products...">
-                    </div>
-                    <div class="col-md-3 d-flex align-items-end">
-                        <button class="btn w-100" id="searchButton">Search</button>
-                    </div>
-                </div>
             </div>
 
             <!-- Product Cards -->

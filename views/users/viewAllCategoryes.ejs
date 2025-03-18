@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>viewAllCategories</title>
+    <title>View All Categories</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -10,96 +10,244 @@
     <!-- Bootstrap CSS v5.2.1 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 1rem;
+        }
+
+        .sidebar h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .sidebar label {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .sidebar input {
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 0.5rem;
+            width: 100%;
+        }
+
+        .sidebar button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+
+        .sidebar button:hover {
+            background: #0056b3;
+        }
+
+        /* Category Cards */
+        .category-card {
+            background: #fff;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-card img {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .category-card .card-body {
+            padding: 1rem;
+        }
+
+        .category-card .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Pagination */
+        .pagination .page-item.active .page-link {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .pagination .page-link {
+            color: #007bff;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Fade-in Animation for Category Cards */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+    </style>
 </head>
 
 <body>
     <header>
-        <!-- place navbar here -->
+        <!-- Navbar -->
         <%- include('../layouts/header.ejs') %>
     </header>
+
     <main>
-
-        <div class="container text-center">
+        <div class="container mt-5">
             <div class="row">
-                <h3 class="mt-5 fs-5 text-start">All Categories</h3>
-                <% categoryData.forEach(category=> { %>
-                    <div class="col-md-5 col-lg-4 col-xl-3 col-xxl-3 mb-lg mb-md-6 col-sm-6 col-12  ">
-                        <div style="border-radius: 5%; background-color: #18ACFE; width: 100%; min-width: 250px; height: 250px;"
-                            class="zoom-out-effect card border shadow p-2  mt-sm-5  mt-md-5 mt-lg-3 mt-xl-0 mt-xxl-0 mt-4">
-                            <a style="-webkit-user-drag: none;" href="/home/products/<%=category.category%>">
-                                <!-- Add your actual link in the href attribute -->
-                                <% for (let i=0; i <=0; i++) { %>
-                                    <img style="margin-bottom: 5px;
-                          -webkit-user-drag: none; width: 300px; height: 200px;
-                        " class="card-img-top img-fluid" src="/images/categoryImages/<%= category.image%>"
-                                        alt="Product Image <%= i + 1 %>" />
-                                    <% } %>
-                            </a>
-                            <p style="font-weight: bold; margin-top: 5px;">
-                                <%= category.category %>
-                            </p>
-                        </div>
+                <!-- Left Sidebar for Filters and Search -->
+                <div class="col-md-3">
+                    <div class="sidebar">
+                        <h4>Filter and Search</h4>
+                        <form action="/viewAllCategories" method="get">
+                            <!-- Search Input -->
+                            <div class="mb-3">
+                                <label for="searchInput">Search Categories</label>
+                                <input type="text" class="form-control" id="searchInput" name="search"
+                                    placeholder="Search Categories...">
+                            </div>
+
+                            <!-- Apply Button -->
+                            <button type="submit" class="btn">Apply Filters</button>
+                        </form>
                     </div>
-                    <% }); %>
-            </div>
+                </div>
 
-            <!-- Dynamic Pagination Links with Arrows -->
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center mt-4">
-                    <% if (currentPage> 1) { %>
-                        <li class="page-item">
-                            <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <% } %>
+                <!-- Right Section for Category Cards -->
+                <div class="col-md-9">
+                    <div class="row">
+                        <h3 class="mt-5 fs-5 text-start">All Categories</h3>
+                        <% categoryData.forEach(category=> { %>
+                            <div class="col-md-4 col-lg-3 mb-4 fade-in">
+                                <div class="card category-card">
+                                    <a style="-webkit-user-drag: none;" href="/home/products/<%=category.category%>">
+                                        <img class="card-img-top img-fluid"
+                                            src="/images/categoryImages/<%= category.image%>"
+                                            alt="<%= category.category %>" />
+                                    </a>
+                                    <div class="card-body">
+                                        <h6 class="card-title">
+                                            <%= category.category %>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <% }); %>
+                    </div>
 
-                            <% const maxPagesToShow=1; // Set the maximum number of pages to display %>
-                                <% const startPage=Math.max(1, currentPage - maxPagesToShow); %>
-                                    <% const endPage=Math.min(totalPages, startPage + maxPagesToShow * 2 - 1); %>
+                    <!-- Pagination -->
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center mt-4">
+                            <% if (currentPage> 1) { %>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <% } %>
 
-                                        <% if (startPage> 1) { %>
-                                            <li class="page-item disabled">
-                                                <span class="page-link">...</span>
-                                            </li>
-                                            <% } %>
+                                    <% const maxPagesToShow=1; %>
+                                        <% const startPage=Math.max(1, currentPage - maxPagesToShow); %>
+                                            <% const endPage=Math.min(totalPages, startPage + maxPagesToShow * 2 - 1);
+                                                %>
 
-                                                <% for (let i=startPage; i <=endPage; i++) { %>
-                                                    <li class="page-item <%= i === currentPage ? 'active' : '' %>">
-                                                        <a class="page-link" href="?page=<%= i %>">
-                                                            <%= i %>
-                                                        </a>
+                                                <% if (startPage> 1) { %>
+                                                    <li class="page-item disabled">
+                                                        <span class="page-link">...</span>
                                                     </li>
                                                     <% } %>
 
-                                                        <% if (endPage < totalPages) { %>
-                                                            <li class="page-item disabled">
-                                                                <span class="page-link">...</span>
+                                                        <% for (let i=startPage; i <=endPage; i++) { %>
+                                                            <li
+                                                                class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                                                <a class="page-link" href="?page=<%= i %>">
+                                                                    <%= i %>
+                                                                </a>
                                                             </li>
                                                             <% } %>
 
-                                                                <% if (currentPage < totalPages) { %>
-                                                                    <li class="page-item">
-                                                                        <a class="page-link"
-                                                                            href="?page=<%= currentPage + 1 %>"
-                                                                            aria-label="Next">
-                                                                            <span aria-hidden="true">&raquo;</span>
-                                                                        </a>
+                                                                <% if (endPage < totalPages) { %>
+                                                                    <li class="page-item disabled">
+                                                                        <span class="page-link">...</span>
                                                                     </li>
                                                                     <% } %>
-                </ul>
-            </nav>
-        </div>
 
+                                                                        <% if (currentPage < totalPages) { %>
+                                                                            <li class="page-item">
+                                                                                <a class="page-link"
+                                                                                    href="?page=<%= currentPage + 1 %>"
+                                                                                    aria-label="Next">
+                                                                                    <span
+                                                                                        aria-hidden="true">&raquo;</span>
+                                                                                </a>
+                                                                            </li>
+                                                                            <% } %>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
     </main>
+
     <footer>
-        <!-- place footer here -->
+        <!-- Footer -->
     </footer>
+
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>

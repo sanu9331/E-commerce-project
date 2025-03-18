@@ -231,7 +231,8 @@ const sendEmail = async (email, otpCode) => {
             requireTLS: true,
             auth: {
                 user: "sanusk9331@gmail.com",
-                pass: 'bvzm hnic xpnx ymxd'
+                // pass: 'bvzm hnic xpnx ymxd'
+                pass: 'rfhy yrrq hyvu ygdi'
             }
         });
 

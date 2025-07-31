@@ -80,7 +80,7 @@ user_route.get('/register', auth.isLogout, userController.loadRegister);
 user_route.post('/register', userController.insertUser);
 
 //USER VERIFICATION THROUGH EMAIL TO COMPLETE
-user_route.get('/verify', auth.isLogout, userController.loadVerify);
+user_route.get('/verify', userController.loadVerify);
 user_route.post('/verify', userController.verifyOTP);
 //user_route.post('/resendOTP', userController.resendOTP);
 

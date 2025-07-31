@@ -34,8 +34,9 @@ const sendEmail = async (email, otpCode) => {
             requireTLS: true,
             auth: {
                 user: "sanusk9331@gmail.com",
-                // pass: 'bvzm hnic xpnx ymxd'
-                pass: 'rfhy yrrq hyvu ygdi'
+                // pass: 'bvzm hnic xpnx ymxd'  
+                // pass: 'rfhy yrrq hyvu ygdi'
+                pass: 'hzda grpz uomz bven'
             }
         });
 
@@ -48,9 +49,9 @@ const sendEmail = async (email, otpCode) => {
         }
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
-                console.log(error);
+                console.log('❌ Email sending error =', error);
             } else {
-                console.log('email have been send:-', info.response);
+                console.log('✅ Email sent:', info.response);
             }
         })
 
@@ -187,11 +188,11 @@ const insertUser = async (req, res) => {
         });
 
         const userData = await user.save();
-
+        console.log('userdata==,', userData)
         if (userData) {
-            generateAndSendOTP(userData.email);
+            await generateAndSendOTP(userData.email);
             // Redirect to the OTP verification page with _id and email as URL parameters
-
+            console.log("🔃 Redirecting to /verify...");
             return res.redirect(`/verify?_id=${userData._id}&email=${userData.email}`);
 
             // sendVerifyMail(req.body.name, req.body.email, userData._id);
@@ -207,11 +208,13 @@ const insertUser = async (req, res) => {
 
 const loadVerify = async (req, res) => {
     try {
+        console.log("✅ /verify route hit with query:", req.query);
+
         const email = req.query.email;
 
         // Check if the user is already verified
         const userData = await User.findOne({ email: email, is_verified: true });
-
+        console.log('userdata in Controller=', userData)
         if (userData) {
             // User is already verified, redirect to a different page
             return res.redirect('/');
@@ -245,6 +248,7 @@ const verifyMail = async (req, res) => {
 const loginLoad = async (req, res) => {
 
     try {
+        console.log("⚠️ Redirected to /login");
         return res.render('login')
     } catch (error) {
         console.log(error.message);
